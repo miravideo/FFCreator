@@ -1,7 +1,7 @@
 const path = require('path');
 const colors = require('colors');
 const startAndListen = require('./listen');
-const { FFCreatorCenter, FFScene, FFVideo, FFImage, FFCreator } = require('../');
+const { FFCreatorCenter, FFScene, FFVideo, FFImage, FFCreator, FFTransition } = require('../');
 
 const createFFTask = () => {
   const bg1 = path.join(__dirname, './assets/imgs/bg/h03.jpg');
@@ -43,6 +43,7 @@ const createFFTask = () => {
     y: height / 2,
     ss: '00:00:03',
     to: '00:00:13',
+    blur: 10,
   });
   fvideo.addEffect('backInUp', 0.5, 0.5);
   // fvideo.setScale(0.3);
@@ -61,8 +62,10 @@ const createFFTask = () => {
   scene1.addChild(flogo1);
 
   scene1.setDuration(3);
-  scene1.setTransition('Magnifier', 1.5);
   creator.addChild(scene1);
+
+  const trans = new FFTransition({name: 'Magnifier', duration: 1.5});
+  creator.addChild(trans);
 
   // add scene2 background
   const fbg2 = new FFImage({ path: bg2, x: width / 2, y: height / 2 });
