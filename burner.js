@@ -2,9 +2,11 @@
 
 const path = require('path');
 const { Factory } = require('./lib/index');
+const CacheUtil = require('./lib/utils/cache');
 
 const outputDir = path.join(__dirname, './output/');
 const cacheDir = path.join(__dirname, './cache/');
+CacheUtil.cacheDir = cacheDir;
 
 const value = `
 <miraml>
@@ -18,6 +20,13 @@ const value = `
       <gif id="g1z2" src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/lab/zhaojun/assets/imgs/gif/girl.gif"
         width="30rpx" x="130rpx" y="100rpx" zIndex="2" blur="3"/>  
     </image>
+    <richtext width="100rpx" height="100rpx" x="100rpx" y="100rpx" color="#00ff99" id="t1z3" zIndex="3">
+      <html style="color:white;width:100px">
+        rich <span style="color:red">text</span> ~ <br />
+        is coool<br />
+        who let the dogs out!!!
+      </html>
+    </richtext>
     <spine>
       <scene background="#096" duration="5">
         <video path="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/public2/190204084208765161.mp4"
@@ -30,7 +39,8 @@ const value = `
           width="50rpx" height="20rpx" x="200rpx" y="50rpx" fit="none" zIndex="1" opacity="0.6" effect="zoomIn,rollIn,fadeIn" effectTime="1" effectDelay="1"/>
         <gif src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/lab/zhaojun/assets/imgs/mars.png"
           width="50rpx" height="20rpx" x="200rpx" y="100rpx" fit="fill"/>
-       
+        <text text="环宇 " fontSize="100" fontFamily="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/lab/data/font/庞门正道标题体.ttf"
+          fontStyle="italic" x="100rpx" y="100rpx" color="#00ff99" stroke="#ff0000" strokeThickness="5" id="t1z3" zIndex="3"/>
       </scene>
       <transition name="InvertedPageCurl" duration="1.5"/>
       <scene background="#903" duration="5">
@@ -49,6 +59,8 @@ const value = `
 
 const burn = async (opts) => {
   Factory.debug = true;
+  Factory.cacheNode = CacheUtil.cacheNode;
+
   const creator = await Factory.from(opts.value, opts, (pp) => {
     console.log(pp);
   });
