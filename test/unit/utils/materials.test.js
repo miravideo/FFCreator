@@ -6,12 +6,6 @@ describe('material/material', () => {
     expect(material.path).toEqual('path');
     expect(material.type).toEqual('image');
   });
-  test('getSourceRect: Get the width and height of the material ', () => {
-    material.info = null;
-    expect(material.getSourceRect(10, 20).toString()).toEqual('Rect:: 0_0_10_20');
-    material.info = { width: 200, height: 100 }; // 等比例截取
-    expect(material.getSourceRect(10, 20).toString()).toEqual('Rect:: 75_0_50_100');
-  });
   test('parse time numer', () => {
     expect(material.parseTimeNumber('')).toBe(0);
     expect(material.parseTimeNumber('n')).toBe(-1);
