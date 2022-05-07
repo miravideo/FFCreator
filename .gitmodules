@@ -1,0 +1,3 @@
+[submodule "inkpaint"]
+	path = inkpaint
+	url = https://github.com/miravideo/inkpaint

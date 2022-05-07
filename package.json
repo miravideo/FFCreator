@@ -41,6 +41,7 @@
     "left-pad": "^1.3.0",
     "lodash": "^4.17.20",
     "lottie-nodejs": "^5.5.99",
+    "md5": "^2.3.0",
     "mtempy": "^1.0.0",
     "ndarray": "^1.0.19",
     "node-fetch": "^3.2.3",
