@@ -1,11 +1,15 @@
 'use strict';
 
 const path = require('path');
+const fs = require("fs");
 const { Factory } = require('./lib/index');
 const CacheUtil = require('./lib/utils/cache');
 
 const outputDir = path.join(__dirname, './output/');
 const cacheDir = path.join(__dirname, './cache/');
+if (!fs.existsSync(cacheDir)) {
+  fs.mkdirSync(cacheDir);
+}
 CacheUtil.cacheDir = cacheDir;
 
 const value = `
@@ -18,7 +22,7 @@ const value = `
       <image id="i2" src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/lab/zhaojun/assets/imgs/mars.png"
         width="50rpx" height="20rpx" x="200rpx" y="50rpx" fit="none" opacity="0.6" effect="zoomIn,rollIn,fadeIn" effectTime="1" effectDelay="2" duration="12"/>
       <gif id="g1z2" src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/lab/zhaojun/assets/imgs/gif/girl.gif"
-        width="30rpx" x="130rpx" y="100rpx" zIndex="2" blur="3"/>  
+        width="30rpx" x="130rpx" y="100rpx" zIndex="2" blur="3"/>
     </image>
     <spine>
       <scene background="#096" duration="3">
