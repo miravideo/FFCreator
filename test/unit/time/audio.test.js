@@ -66,8 +66,8 @@ describe('time/audio', () => {
 
     const clip = new FFClip({ start: -4 });
     audio.addChild(clip);
-    expect(clip.startTime).toBe(6);
-    expect(clip.duration).toBe(4);
+    expect(clip.startTime).toBe(-4);
+    expect(clip.duration).toBe(14);
     expect(clip.endTime).toBe(10);
   });
 });

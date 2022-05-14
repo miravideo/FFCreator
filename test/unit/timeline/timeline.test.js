@@ -12,6 +12,7 @@ describe('timeline/timeline', () => {
   const timeline = new Timeline(mockCreator);
   mockCreator.initSpine();
   mockCreator.allNodes.map(x => x.annotate());
+  mockCreator.renderer = { timeline };
 
   let delta = 0, time = 0;
   mockCreator.timeUpdate = (_delta, _time) => {
