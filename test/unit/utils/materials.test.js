@@ -20,16 +20,20 @@ describe('material/material', () => {
     expect(material.getEndOffset()).toBe(20);
     // container duration (8s) less than material len (10s)
     material.duration = 8;
-    expect(material.getEndOffset()).toBe(18);
+    expect(material.getEndOffset()).toBe(20); // 不考虑container约束，它应该到20s
+    expect(material.getEndOffset(true)).toBe(18); // 考虑container约束，它应该到18s
+    material.length = 5; // 素材长度5秒，比to还少
+    expect(material.getEndOffset()).toBe(5);
   });
   test('getDuration: Obtain duration based on movie information ', () => {
     material.length = 100; // material len
     material.duration = 8; // container duration
-    expect(material.getDuration()).toBe(8);
+    expect(material.getDuration()).toBe(10);
+    expect(material.getDuration(true)).toBe(8);
     material.duration = 15;
     expect(material.getDuration()).toBe(10);
-    material.length = 5;
-    expect(material.getDuration()).toBe(5);
+    material.length = 5; // 素材长度5秒，比ss还小
+    expect(material.getDuration()).toBe(0);
   });
   test('destroy', () => {
     material.destroy();

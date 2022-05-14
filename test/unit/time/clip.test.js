@@ -41,8 +41,8 @@ describe('time/clip', () => {
     expect(clip.endTime).toBe(10);
 
     clip.conf.start = -3;
-    expect(clip.startTime).toBe(7);
-    expect(clip.duration).toBe(3);
+    expect(clip.startTime).toBe(-3);
+    expect(clip.duration).toBe(13);
     expect(clip.endTime).toBe(10);
 
     clip.conf.start = 7;
@@ -66,8 +66,8 @@ describe('time/clip', () => {
     expect(clip.endTime).toBe(10);
 
     clip.conf.start = "-45%";
-    expect(clip.startTime).toBe(5.5);
-    expect(clip.duration).toBe(4.5);
+    expect(clip.startTime).toBe(-4.5);
+    expect(clip.duration).toBe(14.5);
     expect(clip.endTime).toBe(10);
   });
 
@@ -85,6 +85,14 @@ describe('time/clip', () => {
     clip.conf.duration = "150%";
     expect(clip.duration).toBe(15);
     expect(clip.endTime).toBe(15);
+
+    clip.conf.duration = "100% - 2";
+    expect(clip.duration).toBe(8);
+    expect(clip.endTime).toBe(8);
+
+    clip.conf.duration = "100% + 3";
+    expect(clip.duration).toBe(13);
+    expect(clip.endTime).toBe(13);
   });
 
   test('clip: end change', () => {
@@ -102,18 +110,22 @@ describe('time/clip', () => {
     expect(clip.duration).toBe(15);
     expect(clip.endTime).toBe(15);
 
+    clip.conf.start = "-10";
     clip.conf.end = "-3";
     expect(clip.duration).toBe(7);
-    expect(clip.endTime).toBe(7);
+    expect(clip.endTime).toBe(-3);
 
     clip.conf.end = "-60%";
     expect(clip.duration).toBe(4);
-    expect(clip.endTime).toBe(4);
+    expect(clip.endTime).toBe(-6);
 
-    // use end only
-    clip.conf.duration = "60%";
-    clip.conf.end = "-60%";
-    expect(clip.duration).toBe(4);
-    expect(clip.endTime).toBe(4);
+    clip.conf.start = '100% - 5';
+    clip.conf.end = "100% - 2";
+    expect(clip.duration).toBe(3);
+    expect(clip.endTime).toBe(8);
+
+    clip.conf.end = "100% + 3";
+    expect(clip.duration).toBe(8);
+    expect(clip.endTime).toBe(13);
   });
 });
