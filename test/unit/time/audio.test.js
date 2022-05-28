@@ -91,30 +91,4 @@ describe('time/audio', () => {
     expect(audio.material.getDuration(true)).toBe(5);
   });
 
-  test('audio: seekTime with ss/to and speed', () => {
-    const audio = new FFAudio({});
-    audio.material = new Material({ ss: 2, to: 8, speed: 0.5 });
-    audio.material.length = 10;
-    audio.material.realLength = 20; // 预处理之后，实际的长度20秒
-    audio.parent = { startTime: 0, duration: 5 };
-    expect(audio.speed).toBe(0.5);
-    expect(audio.material.getStartOffset()).toBe(2);
-    expect(audio.material.getDuration()).toBe(12);
-
-    // 因为变速会做预处理，所以实际的ss应该是4秒
-    expect(audio.seekTime(0)).toBe(4);   // 4 + 0
-    expect(audio.seekTime(3)).toBe(7);   // 4 + 3
-    expect(audio.seekTime(15)).toBe(16); // 4 + min(12, 15)
-
-    audio.material.realLength = 18; // 预处理之后，实际的长度可能是18秒，等于是1.8倍速
-    expect(audio.seekTime(0).toFixed(1)).toBe('3.6'); // 2 * 1.8
-    // todo: 其实这个地方不应该是12了，相应的应该减少到10.8
-    expect(audio.seekTime(15).toFixed(1)).toBe('15.6'); // 3.6 + min(12, 15)
-
-    audio.speed = 2;
-    expect(audio.speed).toBe(2);
-    audio.material.realLength = 5;
-    expect(audio.seekTime(0).toFixed(1)).toBe('1.0'); // 2 * 0.5 = 1
-    expect(audio.seekTime(3).toFixed(1)).toBe('4.0'); // 1 + 3
-  });
 });
