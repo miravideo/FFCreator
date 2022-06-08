@@ -16,9 +16,10 @@ const burn = async (opts) => {
   Factory.debug = true;
   Factory.cacheNode = CacheUtil.cacheNode;
 
-  const creator = await Factory.from(opts.value, opts, (pp) => {
+  const {creator, cache} = Factory.from(opts.value, opts, (pp) => {
     console.log(pp);
   });
+  await cache;
 
   let t = Date.now();
   creator.on('start', () => {
