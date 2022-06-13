@@ -65,14 +65,6 @@ const choices = [
     value: 'fps',
   },
   {
-    name: 'Multiple video stitching animation',
-    value: 'mvideo',
-  },
-  {
-    name: 'Simple 2d virtual anchor',
-    value: 'vtuber',
-  },
-  {
     name: 'Render AE Lottie animations file',
     value: 'lottie',
   },
