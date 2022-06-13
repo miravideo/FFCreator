@@ -1,9 +1,22 @@
-<miraml>
+ <miraml>
   <canvas width="800" height="600" render="webgl">
-    <video id="pppp" path="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/public2/190204084208765161.mp4"
-      x="50vw" y="50vh" width="100vw" volume="0.5" fit="fill" speed="1.5">
-    </video>
-    <audio name="none" src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/jianshuo/beats.mp3" 
-      preload="true" ss="3" to="9" loop="true" speed="1.5" duration="9" audio="true" volume="1" fadeIn="2" fadeOut="2" />
+    <spine>
+      <image id="i1" src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/lab/zhaojun/assets/imgs/gif/girl.gif"
+      width="30rpx" x="130rpx" y="50rpx" start="0.5" zIndex="1" duration="3">
+      <image id="i2" src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/lab/zhaojun/assets/imgs/mars.png"
+        width="50rpx" height="20rpx" x="200rpx" y="50rpx" fit="none" opacity="0.6" effect="zoomIn,rollIn,fadeIn" effectTime="1"/>
+      <gif id="g1z2" src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/lab/zhaojun/assets/imgs/gif/girl.gif"
+        width="30rpx" x="130rpx" y="100rpx" zIndex="2" blur="3"/>  
+      </image>
+    </spine>
+    <text text="环宇11" fontSize="100" fontFamily="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/lab/data/font/庞门正道标题体.ttf"
+      x="100rpx" y="100rpx" color="#00ff99" zIndex="3">
+      <stroke color="#000" size="10%" />
+      <shadow color="#F00" offset="5%" angle="0"/>
+    </text>
+    <text text="环宇22" fontSize="100" fontFamily="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/lab/data/font/庞门正道标题体.ttf"
+      fontStyle="bold" x="100rpx" y="150rpx" color="#00ff99" zIndex="3">
+      <stroke color="#FFF" size="20%" />
+    </text>
   </canvas>
 </miraml>
