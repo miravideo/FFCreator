@@ -1,5 +1,5 @@
  <miraml>
-  <canvas width="800" height="600" render="webgl">
+  <canvas width="800" height="600" render="webgl" parallel="10">
     <spine>
       <image id="i1" src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/lab/zhaojun/assets/imgs/gif/girl.gif"
       width="30rpx" x="130rpx" y="50rpx" start="0.5" zIndex="1" duration="3">
@@ -18,5 +18,7 @@
       fontStyle="bold" x="100rpx" y="150rpx" color="#00ff99" zIndex="3">
       <stroke color="#FFF" size="20%" />
     </text>
+    <video id="pppp" src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/public2/190204084208765161.mp4"
+      x="50vw" y="50vh" width="100vw"  volume="0.5" fit="fill" /> 
   </canvas>
 </miraml>
