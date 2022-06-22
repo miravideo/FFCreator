@@ -1,5 +1,5 @@
  <miraml>
-  <canvas width="800" height="600" render="canvas" start="5" end="10" mute="true" opencv="false">
+  <canvas width="800" height="600" render="canvas" start="5" end="10" mute="true" opencv="true" keepVideoCache="true">
     <spine>
       <video src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/public2/190204084208765161.mp4"
         x="50vw" y="50vh" width="100vw" ss="1" duration="3" fit="fill" />
