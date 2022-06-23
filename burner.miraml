@@ -5,8 +5,9 @@
     "render": "canvas",
     "start": 0,
     "end": 30,
-    "mute": true,
+    "ext": "m4a",
     "opencv": true,
+    "fast": true,
     "pathId": "pppp",
     "library": [
         {
