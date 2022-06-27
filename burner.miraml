@@ -1,5 +1,5 @@
 <miraml>
-    <canvas width="800" height="600" render="webgl" pathId="ttt">
+    <canvas width="800" height="600" render="canvas" pathId="ttt">
         <audio preload="true" src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/jianshuo/beats.mp3" />
         <spine>
           <video src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/lab/aiqiyi/output_cuts/%E4%BA%91%E5%B7%85%E4%B9%8B%E4%B8%8A_%E7%AC%AC2%E5%AD%A3_%E7%AC%AC6%E9%9B%86-%E7%94%B5%E8%A7%86%E5%89%A7%E5%85%A8%E9%9B%86-%E5%AE%8C%E6%95%B4%E7%89%88%E8%A7%86%E9%A2%91%E5%9C%A8%E7%BA%BF%E8%A7%82%E7%9C%8B-%E7%88%B1%E5%A5%87%E8%89%BA_scenes/30.mp4"
