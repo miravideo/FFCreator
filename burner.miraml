@@ -1,20 +1,22 @@
 <miraml>
-    <canvas width="800" height="600" render="canvas" pathId="ttt">
+      <canvas width="800" height="600" render="canvas" pathId="ttt" fast="true">
         <audio preload="true" src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/jianshuo/beats.mp3" />
-        <video src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/lab/aiqiyi/output_cuts/%E4%BA%91%E5%B7%85%E4%B9%8B%E4%B8%8A_%E7%AC%AC2%E5%AD%A3_%E7%AC%AC6%E9%9B%86-%E7%94%B5%E8%A7%86%E5%89%A7%E5%85%A8%E9%9B%86-%E5%AE%8C%E6%95%B4%E7%89%88%E8%A7%86%E9%A2%91%E5%9C%A8%E7%BA%BF%E8%A7%82%E7%9C%8B-%E7%88%B1%E5%A5%87%E8%89%BA_scenes/30.mp4"
-          x="0" y="100" ss="2" duration="2" object-fit="contain" anchor="[0, 0]" width="100vw" height="100vh">
-          <pframe x="0.4" y="0.4" w="0.5" h="0.3" />
+        <video src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/public2/190204084208765161.mp4"
+          x="50vw" y="50vh" width="100vw" height="100vh">
         </video>
         <spine>
-          <video src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/lab/zhaojun/assets/video/vtuber.mp4" colorkey="#74fa4c" colorsimilarity="0.18"
-            x="50vw" y="50vh" ss="2" duration="2" object-fit="cover" width="100vw" height="100vh" opacity="0.5"/>
+          <video src="https://afu-1255830993.cos.ap-shanghai.myqcloud.com/lab/penghui/%E7%BB%BF%E5%B9%95/fireball%20explosion%20FX%20Effect%201%20-%20with%20Alpha%20channel.MP4" colorkey="#000000" colorsimilarity="0.2"
+            x="50vw" y="50vh" ss="8" duration="6" object-fit="cover" width="100vw" height="100vh" />
+          <video src="https://afu-1255830993.cos.ap-shanghai.myqcloud.com/lab/penghui/%E7%BB%BF%E5%B9%95/Fire%20special%20effects%20-%20green%20screen%20effects.MP4" colorkey="#03d903" colorsimilarity="0.2"
+            x="50vw" y="50vh" ss="2" duration="10" width="100vw" height="100vh">
+          </video>
           <video id="pppp" src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/public2/190204084208765161.mp4"
             x="50vw" y="30vh" width="100vw" loop="true" ss="2" to="5" speed="2" duration="4.5" volume="2" fit="fill" />
           <video src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/lab/aiqiyi/output_cuts/%E4%BA%91%E5%B7%85%E4%B9%8B%E4%B8%8A_%E7%AC%AC2%E5%AD%A3_%E7%AC%AC6%E9%9B%86-%E7%94%B5%E8%A7%86%E5%89%A7%E5%85%A8%E9%9B%86-%E5%AE%8C%E6%95%B4%E7%89%88%E8%A7%86%E9%A2%91%E5%9C%A8%E7%BA%BF%E8%A7%82%E7%9C%8B-%E7%88%B1%E5%A5%87%E8%89%BA_scenes/30.mp4"
             x="50vw" y="50vh" duration="2" height="100vh" volume="2"/>
         </spine>
         <text id="test_1" text="字体M" fontSize="100" fontFamily="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/fonts/PangMenZhengDaoCuShuTi.ttf"
-        valign="bottom" duration="3" x="50vw" y="95vh" color="#00ff99" zIndex="3">
+         valign="bottom" duration="3" x="50vw" y="95vh" color="#00F" zIndex="3" colorkey="#00F" >
           <stroke color="#FFF" size="5rpx" />
           <shadow color="#F00" offset="3rpx" angle="0"/>
           <speech src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/lab/data/sounds/readyGo1.mp3" duration="100%"></speech>
