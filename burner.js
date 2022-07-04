@@ -35,25 +35,26 @@ const burn = async (opts) => {
   }).on('error', e => {
     console.error("creator error", e);
   }).on('progress', e => {
-    console.log(`Burn progress: ${(e.percent * 100) >> 0}%`);
+    let number = e.percent || 0;
+    console.log(`Burn progress: ${(number * 100) >> 0}%`);
     console.log(`Burn progress timestamp: ${Date.now() - t}ms`);
     client.sendMessage({
       step: "synthesis",
-      process: round(e.percent),
+      progress: round(number),
     });
   }).on('preloading', (evt) => {
     console.log(`Burn preloading: ${evt.id}: ${evt.loaded}/${evt.total}`);
     console.log(`Burn preloading timestamp: ${Date.now() - t}ms`);
     client.sendMessage({
       step: "preloading",
-      process: round(evt.loaded / evt.total),
+      progress: round(evt.loaded / evt.total),
     });
   }).on('prepareMaterial', (evt) => {
     console.log(`Burn prepareMaterial: ${evt.id}: ${evt.prepared}/${evt.total}`);
     console.log(`Burn prepareMaterial timestamp: ${Date.now() - t}ms`);
     client.sendMessage({
       step: "prepareMaterial",
-      process: round(evt.prepared / evt.total),
+      progress: round(evt.prepared / evt.total),
     });
   }).on('complete', e => {
     console.log(`Burn completed: \n USEAGE: ${e.useage} \n PATH: ${e.output} `);
@@ -66,18 +67,28 @@ const burn = async (opts) => {
   }).generateOutput().start();
 }
 
-const client = new SocketClient(process.env.TASK_ID, process.env.SERVER_PORT, process.env.SERVER_IP);
-client.connect().catch(console.error).finally(async () => {
-  client.sendMessage({
-    status: "start",
-  });
+const client = new SocketClient(process.env.TASK_ID, process.env.SERVER_PORT, process.env.SERVER_HOST);
 
+async function parseCommandLineAndBurn() {
   let miraml_file = process.argv[2] || './burner.miraml';
   console.log("miraml_file:", miraml_file);
   const value = fs.readFileSync(miraml_file, 'utf8');
   console.log("value:", value);
-  await burn({value, cacheDir, outputDir:path.dirname(miraml_file)});
-});
+  await burn({value, cacheDir, outputDir: path.dirname(miraml_file)});
+}
+
+function connectSocketAndBurn() {
+  client.connect().then(async () => {
+    client.sendMessage({
+      status: "start",
+    });
+
+    await parseCommandLineAndBurn();
+  }).catch((e)=>{
+    console.error(e);
+    setTimeout(connectSocketAndBurn, 1000);
+  });
+}
 process.on('uncaughtException', err => {
   client.sendMessage({
     status: "error",
@@ -87,3 +98,10 @@ process.on('uncaughtException', err => {
   console.error('uncaughtException', err);
   process.exit(1); // mandatory (as per the Node.js docs)
 });
+
+if (process.env.SERVER_HOST) {
+  connectSocketAndBurn();
+} else {
+  parseCommandLineAndBurn();
+}
+
