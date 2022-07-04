@@ -66,7 +66,7 @@ const burn = async (opts) => {
   }).generateOutput().start();
 }
 
-const client = new SocketClient(process.env.TASK_ID, process.env.SERVER_PORT, process.env.SERVER_HOST);
+const client = new SocketClient(process.env.TASK_ID, process.env.SERVER_PORT, process.env.SERVER_IP);
 client.connect().catch(console.error).finally(async () => {
   client.sendMessage({
     status: "start",
