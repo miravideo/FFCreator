@@ -1,25 +1,28 @@
 const net = require("net");
 
 class SocketClient {
-  constructor(task_id, unix_socket) {
+  constructor(task_id, port, host) {
     this.task_id = task_id;
-    this.unix_socket = unix_socket;
+    this.port = port;
+    this.host = host;
   }
 
   async connect() {
-    await this._connect(this.unix_socket);
+    await this._connect();
   }
 
   _connect() {
     return new Promise((resolve, reject) => {
       const failed = setTimeout(() => {
+        this.client = null;
         reject();
       }, 1000);
-      this.client = net.createConnection(this.unix_socket, () => {
+      this.client = net.createConnection(this.port, this.host, () => {
         clearTimeout(failed);
         resolve(this.client);
       });
       this.client.on('error', (e) => {
+        this.client = null;
         reject(e);
       });
     });
@@ -45,8 +48,11 @@ class SocketClient {
     return Buffer.concat([lengthBuffer, messageBuffer]);
   }
 
-  destory() {
-    this.client.destroy();
+  destroy() {
+    if (this.client && !this.client.connecting) {
+      this.client.destroy();
+      this.client = null;
+    }
   }
 }
 

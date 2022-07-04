@@ -62,11 +62,11 @@ const burn = async (opts) => {
       status: "finish",
       result: e.output,
     });
-    client.destory();
+    client.destroy();
   }).generateOutput().start();
 }
 
-const client = new SocketClient(process.env.TASK_ID, process.env.CHAT_SOCK || "/dev/null");
+const client = new SocketClient(process.env.TASK_ID, process.env.SERVER_PORT, process.env.SERVER_IP);
 client.connect().catch(console.error).finally(async () => {
   client.sendMessage({
     status: "start",
@@ -76,14 +76,14 @@ client.connect().catch(console.error).finally(async () => {
   console.log("miraml_file:", miraml_file);
   const value = fs.readFileSync(miraml_file, 'utf8');
   console.log("value:", value);
-  await burn({value, cacheDir, outputDir});
+  await burn({value, cacheDir, outputDir:path.dirname(miraml_file)});
 });
 process.on('uncaughtException', err => {
   client.sendMessage({
     status: "error",
     error: err.message,
   });
-  client.destory();
+  client.destroy();
   console.error('uncaughtException', err);
   process.exit(1); // mandatory (as per the Node.js docs)
 });
