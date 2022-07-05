@@ -13,7 +13,8 @@
     "doc": "docsify serve ./docs",
     "test-typings": "tsc -b types/tsconfig.json && tsc -b types/test/tsconfig.json",
     "install_arm64": "build-opencv --version 4.5.4 --flag=\"-DCMAKE_SYSTEM_PROCESSOR=arm64 -DCMAKE_OSX_ARCHITECTURES=arm64\" rebuild",
-    "do-install": "build-opencv --incDir /opt/homebrew/Cellar/opencv/4.5.5_2/include/opencv4/ --libDir /opt/homebrew/Cellar/opencv/4.5.5_2/lib/ --binDir=/opt/homebrew/Cellar/opencv/4.5.5_2/bin/ --nobuild rebuild",
+    "do-install": "build-opencv rebuild",
+    "do-install-homebrew": "build-opencv --incDir /opt/homebrew/Cellar/opencv/4.5.5_2/include/opencv4/ --libDir /opt/homebrew/Cellar/opencv/4.5.5_2/lib/ --binDir=/opt/homebrew/Cellar/opencv/4.5.5_2/bin/ --nobuild rebuild",
     "do-ubuntu-install": "build-opencv --incDir /usr/include/opencv --libDir /usr/lib/x86_64-linux-gnu/ --binDir=/usr/bin/ --nobuild rebuild"
   },
   "repository": "https://github.com/tnfe/FFCreator",
