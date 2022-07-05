@@ -21,6 +21,7 @@ RUN cd /code/ffcreator/inkpaint && npm update -g && npm install --loglevel verbo
 ADD ./package.json /code/ffcreator
 RUN cd /code/ffcreator && npm update -g && npm install --loglevel verbose
 RUN mv /code/ffcreator/node_modules/canvas/build/Release/libcairo.so.2 /code/ || mv /code/ffcreator/node_modules/canvas/build/Release/librsvg-2.so.2 /code/ || echo "libcairo.so.2 or librsvg-2.so.2 not found"
+RUN cd /code/ffcreator && npm run do-install
 
 ADD . /code/ffcreator
 WORKDIR /code/ffcreator
