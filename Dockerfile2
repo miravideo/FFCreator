@@ -1,0 +1,18 @@
+FROM ubuntu:18.04
+
+#RUN sed -i s@/archive.ubuntu.com/@/mirrors.cloud.tencent.com/@g /etc/apt/sources.list && apt-get clean && apt-get update
+RUN apt-get clean && apt-get update
+
+RUN apt-get install -y curl software-properties-common pkg-config vim git
+
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - && apt-get install -y nodejs
+
+RUN DEBIAN_FRONTEND=noninteractive TZ=Asia/Shanghai apt-get install -y libcairo2-dev libjpeg-dev libpango1.0-dev libgif-dev build-essential g++ \
+    libgl1-mesa-dev xvfb libxi-dev libx11-dev libopencv-dev
+
+#RUN export https_proxy=http://43.154.18.182:6399;export http_proxy=http://43.154.18.182:6399
+RUN add-apt-repository -y ppa:savoury1/ffmpeg4  \
+    && apt-get update \
+    && apt-get install -y ffmpeg
+RUN add-apt-repository -y --remove ppa:savoury1/ffmpeg4
+RUN unset https_proxy;unset http_proxy
