@@ -3,7 +3,7 @@ FROM mirav.tencentcloudcr.com/mira/afu/ffmpeg/node
 RUN mkdir /code
 RUN mkdir /code/ffcreator
 
-RUN npm config set proxy=http://43.154.18.182:6399
+RUN npm config set proxy=http://43.154.18.182:6398
 
 #下面分三次add，主要是希望build尽可能使用cache，减少rebuild的概率。
 ADD ./inkpaint /code/ffcreator/inkpaint
