@@ -79,6 +79,12 @@ router.get('/time', async (ctx) => {
   ctx.body = s
 })
 
+router.get('/healthy', async (ctx) => {
+  ctx.body = {
+    status: 'ok',
+  };
+})
+
 app
   .use(koaBody())
   .use(router.routes())
