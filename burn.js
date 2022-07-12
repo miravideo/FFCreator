@@ -42,7 +42,7 @@ const burn = async (opts) => {
     console.log(`Burn start timestamp: ${Date.now() - t}ms`);
     onMessage({
       task_id,
-      status: "task_start",
+      status: "start",
     });
   }).on('error', e => {
     console.error("creator error", e);

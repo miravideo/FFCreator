@@ -20,7 +20,7 @@ function connectSocket() {
   if (!process.env.SOCKET_HOST) return;
   client.connect().then(async () => {
     client.sendMessage({
-      status: "start",
+      status: "server_start",
     });
   }).catch((e)=>{
     console.error(e);
