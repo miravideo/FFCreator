@@ -20,5 +20,10 @@
       <shadow color="#F00" offset="5%" angle="0"/>
       <speech src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/lab/data/sounds/readyGo1.mp3" duration="100%"></speech>
     </text>
+    <cover duration="10">
+      <filter key="magnifier" frag="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/lab/data/face_util/magnifier.frag">
+        <vars center="[0.35, 0.5]" radius="120" strength="2"></vars>
+      </filter>
+    </cover>
   </canvas>
 </miraml>
