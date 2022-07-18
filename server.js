@@ -38,6 +38,7 @@ process.on('uncaughtException', err => {
 });
 
 let burnProcessMap = {};
+let burnProcessLastMessage = {}
 router.post('/burn', async (ctx) => {
   const {draft_json: value, output_dir: outputDir, task_id, sync=false} = ctx.request.body;
   const s = sync ? new PassThrough() : null;
@@ -50,18 +51,20 @@ router.post('/burn', async (ctx) => {
     if (task_id) msg = {...msg, task_id}
     client.sendMessage(msg);
     s?.push(JSON.stringify(msg) + "\n");
+    burnProcessLastMessage[task_id] = msg;
   });
   burnProcess.on('exit', () => {
     console.log("===burnProcess exit===");
     s?.push(null);
-    delete burnProcessMap[burnProcess.pid];
+    delete burnProcessMap[task_id];
+    delete burnProcessLastMessage[task_id];
   });
   burnProcess.send({
     value,
     task_id,
     outputDir,
   });
-  burnProcessMap[burnProcess.pid] = burnProcess;
+  burnProcessMap[task_id] = burnProcess;
 
   if (sync) {
     ctx.type = 'text/plain; charset=utf-8';
@@ -74,10 +77,51 @@ router.post('/burn', async (ctx) => {
   }
 });
 
+router.get('/status', async (ctx) => {
+  const sync = "sync" in ctx.request.query ? (ctx.request.query.sync).toLowerCase() === "true" : true;
+  const task_id = ctx.request.query.task_id;
+  const s = sync ? new PassThrough() : null;
+
+  const lastMessage = burnProcessLastMessage[task_id];
+  if (lastMessage) {
+    s?.push(JSON.stringify(lastMessage) + "\n");
+  }
+  const burnProcess = burnProcessMap[task_id];
+  if (!burnProcess) {
+    ctx.type = 'text/plain; charset=utf-8';
+    ctx.body = `task_id(${task_id}) not found`;
+    return
+  }
+  burnProcess.on('message', (msg) => {
+    if (task_id) msg = {...msg, task_id}
+    s?.push(JSON.stringify(msg) + "\n");
+  });
+  burnProcess.on('exit', () => {
+    s?.push(null);
+  });
+
+  if (sync) {
+    ctx.type = 'text/plain; charset=utf-8';
+    ctx.body = s
+  } else {
+    ctx.type = 'text/plain; charset=utf-8';
+    ctx.body = JSON.stringify(lastMessage) + "\n";
+  }
+});
+
 router.get('/cancel', async (ctx) => {
-  for (const key in burnProcessMap) {
-    const burnProcess = burnProcessMap[key];
-    burnProcess.kill("SIGTERM");
+  const task_id = ctx.request.query.task_id;
+  if (task_id in burnProcessMap) {
+    burnProcessMap[task_id].kill("SIGTERM");
+  } else if (task_id === "all") {
+    for (const key in burnProcessMap) {
+      const burnProcess = burnProcessMap[key];
+      burnProcess.kill("SIGTERM");
+    }
+  } else {
+    ctx.type = 'text/plain; charset=utf-8';
+    ctx.body = `task_id(${task_id}) not found`;
+    return;
   }
   ctx.type = 'text/plain; charset=utf-8';
   ctx.body = {
