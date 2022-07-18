@@ -1,29 +1,147 @@
 <miraml>
-  <canvas width="800" height="600" render="webgl" pathId="ttt" >
-    <spine>
+    <canvas width="800" height="600" render="webgl">
+      <spine>
+        <image id="monkey_img" src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/lab/data/face_util/monkey.jpeg"
+          height="100vh" x="50vw" y="50vh" duration="10" preload="true">
+          <!-- <motion src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/lab/data/face_util/monkey.png"
+            y="8" x="0" curve="3"></motion> -->
+          <animate time="3" ease="Quadratic.Out">
+            <from scale="1.3"></from>
+            <to scale="1"></to>
+          </animate>
+          <color key="contrast" value="-0.3"></color>
+          <color key="brightness" value="1.5"></color>
+          <color key="saturate" value="0.3"></color>
+        </image>
+      </spine>
+      <cover duration="10">
+        <filter key="masaic">
+          <vars size="[30, 30]"></vars>
+          <render><![CDATA[
+            vec2 mapCoord( vec2 coord ) {
+              coord *= filterArea.xy;
+              coord += filterArea.zw;
+              return coord;
+            }
+            
+            vec2 unmapCoord( vec2 coord ) {
+              coord -= filterArea.zw;
+              coord /= filterArea.xy;
+              return coord;
+            }
+
+            vec2 pixelate(vec2 coord, vec2 size) {
+              return floor( coord / size ) * size;
+            }
+
+            vec4 render(sampler2D tex, vec2 uv, vec4 bg, vec4 mask, float alpha) {
+              vec2 coord = mapCoord(uv);
+              coord = pixelate(coord, size);
+              coord = unmapCoord(coord);
+              return texture2D(tex, coord);
+            }
+            ]]></render>
+          <!-- <text id="filter_mask" fontSize="100" fontFamily="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/fonts/PangMenZhengDaoCuShuTi.ttf"
+            x="50vw" y="70vh" color="#FFF" asMask="true">
+            <content>火大🔥</content>
+            <stroke color="#999" size="5rpx" />
+            <shadow color="#00F" offset="3rpx" angle="0"/>
+            <animate time="3" delay="1" ease="Quadratic.Out">
+              <from scale="1"></from>
+              <to scale="5"></to>
+            </animate>
+          </text> -->
+          <!-- <image src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/lab/data/face_util/house-mask.png"
+            asMask="true" x="30vw" y="50vh" height="50vh" preload="true">
+            <animate time="3" delay="1" ease="Quadratic.Out">
+              <from scale="1"></from>
+              <to scale="2"></to>
+            </animate>
+          </image> -->
+          <graph shape="circle" color="#FFF" blur="10" x="50vw" y="60vh" radius="50rpx" asMask="true">
+            <animate time="5" delay="1" ease="Quadratic.Out">
+              <from scale="1"></from>
+              <to scale="5"></to>
+            </animate>
+          </graph>
+        </filter>
+      </cover>
+      <scene>
+        <graph shape="circle" color="#F00" x="80vw" y="60vh" radius="50rpx" zIndex="100" opacity="0.5">
+          <animate time="5" delay="1" ease="Quadratic.Out">
+            <from scale="1"></from>
+            <to scale="5"></to>
+          </animate>
+        </graph>
+      </scene>
       <video src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/public2/190204084208765161.mp4"
-        x="50vw" y="50vh" width="100vw" height="100vh">
+        x="50vw" y="20vh" height="50vh" volume="0.3">
+        <!-- <text fontSize="100" fontFamily="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/fonts/PangMenZhengDaoCuShuTi.ttf"
+          duration="10" x="50vw" y="60vh" color="#FFFFFF" asMask="true">
+          <content>火大🔥</content>
+          <stroke color="#999" size="5rpx" />
+          <shadow color="#00F" offset="3rpx" angle="0"/>
+          <animate time="5" delay="3" ease="Quadratic.Out">
+            <from scale="1"></from>
+            <to scale="10"></to>
+          </animate>
+        </text> -->
+        <image id="video_mask:house" src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/lab/data/face_util/house-mask.png"
+          asMask="true" x="50vw" y="20vh" height="30vh" >
+          <animate time="5" delay="3" ease="Quadratic.Out">
+            <from scale="1"></from>
+            <to scale="10"></to>
+          </animate>
+        </image>
+        <!-- <graph shape="circle" color="#FFF" x="50vw" y="30vh" radius="50rpx" asMask="true">
+          <animate time="5" delay="1" ease="Quadratic.Out">
+            <from scale="1"></from>
+            <to scale="5"></to>
+          </animate>
+        </graph> -->
       </video>
-    </spine>
-    <video x="50vw" y="50vh" height="100vh" chromaKey="#00D800" chromaSimilarity="0.15" chromaSaturation="0.25"
-      src="https://afu-1255830993.cos.ap-shanghai.myqcloud.com/lab/penghui/%E7%BB%BF%E5%B9%95/Fire%20special%20effects%20-%20green%20screen%20effects.MP4" />
-    <text id="test_1" text="字体M" fontSize="100" fontFamily="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/fonts/PangMenZhengDaoCuShuTi.ttf"
-      valign="bottom" duration="3" x="50vw" y="95vh" color="#00F" zIndex="3" colorkey="#00F" >
-      <stroke color="#FFF" size="5rpx" />
-      <shadow color="#F00" offset="3rpx" angle="0"/>
-      <speech src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/lab/data/sounds/readyGo1.mp3" duration="100%"></speech>
-    </text>
-    <text fontSize="100" fontFamily="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/lab/data/font/庞门正道标题体.ttf"
-      align="left" valign="bottom" wrap="true" start="5" duration="2" x="10rpx" y="95vh" color="#FFFFFF" zIndex="3">
-      <content>22</content>
-      <stroke color="#000" size="10%" />
-      <shadow color="#F00" offset="5%" angle="0"/>
-      <speech src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/lab/data/sounds/readyGo1.mp3" duration="100%"></speech>
-    </text>
-    <cover duration="10">
-      <filter key="magnifier" frag="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/lab/data/face_util/magnifier.frag">
-        <vars center="[0.35, 0.5]" radius="120" strength="2"></vars>
-      </filter>
-    </cover>
-  </canvas>
-</miraml>
+      <cover duration="10">
+        <filter key="magnifier" >
+          <vars strength="2"></vars>
+          <render><![CDATA[
+            vec2 rotate(vec2 coord, float rotate) {
+              float msin = sin(rotate);
+              float mcos = cos(rotate);
+              vec2 mcoord;
+              mcoord.x = coord.x * mcos + coord.y * msin;
+              mcoord.y = coord.y * mcos - coord.x * msin;
+              return mcoord;
+            }
+
+            vec4 render(sampler2D tex, vec2 uv, inout vec4 bg, vec4 mask, float alpha) {
+              vec2 coord = uv * filterArea.xy;
+              coord -= uMaskAnchor;
+              vec4 color = vec4(0.0);
+              if (alpha > 0.0) {
+                vec2 offset = rotate(uMaskSize, uMaskRotation);
+                coord.x -= offset.x * 0.6;
+                coord.y += offset.y * 0.6;
+                coord /= strength;
+                coord += uMaskAnchor;
+                coord /= filterArea.xy;
+                color = texture2D(tex, coord);
+              }
+              bg *= clamp(0.5 + 5.0 * (uStart / uDuration), 0.0, 1.0);
+              return color;
+            }
+          ]]></render>
+          <image src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/lab/data/face_util/mask.png"
+            asMask="true" binaryMask="true" x="20vw" y="55vh" height="38vh"
+            preload="true" anchor="[0, 1]" >
+          </image>
+        </filter>
+      </cover>
+      <text fontSize="100" fontFamily="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/lab/data/font/庞门正道标题体.ttf"
+      align="left" valign="bottom" wrap="true" duration="5" x="10rpx" y="95vh" color="#FFFFFF">
+        <content>22</content>
+        <stroke color="#000" size="10%" />
+        <shadow color="#F00" offset="5%" angle="0"/>
+        <speech src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/lab/data/sounds/readyGo1.mp3" duration="100%" pitch="0.5"></speech>
+      </text>
+    </canvas>
+  </miraml>
