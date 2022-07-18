@@ -54,7 +54,9 @@ const burn = async (opts) => {
     onMessage({
       task_id,
       step: "synthesis",
-      progress: round(number),
+      step_progress: round(number),
+      status: "progress",
+      progress: round(0.2 + number * 0.8),
     });
   }).on('preloading', (evt) => {
     console.log(`Burn preloading: ${evt.id}: ${evt.loaded}/${evt.total}`);
@@ -62,7 +64,9 @@ const burn = async (opts) => {
     onMessage({
       task_id,
       step: "preloading",
-      progress: round(evt.loaded / evt.total),
+      step_progress: round(evt.loaded / evt.total),
+      status: "progress",
+      progress: round((evt.loaded / evt.total) * 0.05),
     });
   }).on('prepareMaterial', (evt) => {
     console.log(`Burn prepareMaterial: ${evt.id}: ${evt.prepared}/${evt.total}`);
@@ -70,7 +74,9 @@ const burn = async (opts) => {
     onMessage({
       task_id,
       step: "prepareMaterial",
-      progress: round(evt.prepared / evt.total),
+      step_progress: round(evt.prepared / evt.total),
+      status: "progress",
+      progress: round(0.05 + (evt.prepared / evt.total) * 0.15),
     });
   }).on('complete', e => {
     console.log(`Burn completed: \n USEAGE: ${e.useage} \n PATH: ${e.output} `);
