@@ -1,5 +1,6 @@
 'use strict';
 
+// const {execSync} = require('child_process');
 const path = require('path');
 const fs = require("fs");
 const { Factory } = require('./lib/index');
@@ -9,7 +10,6 @@ const cacheDir = path.join(__dirname, './cache/');
 if (!fs.existsSync(cacheDir)) {
   fs.mkdirSync(cacheDir);
 }
-CacheUtil.cacheDir = cacheDir;
 
 function round(x) {
   const PROGRESS_PRECISION = 3;
@@ -18,10 +18,11 @@ function round(x) {
 }
 
 const burn = async (opts) => {
+  // execSync(`find ${cacheDir}*  -name '????????????????' -type d -ctime +1 -exec rm -rf {} \\;`);//删除1天以上的缓存目录
+  if (!opts['cacheDir']) opts['cacheDir'] = cacheDir
+  CacheUtil.cacheDir = cacheDir;
   Factory.debug = true;
   Factory.cacheNode = CacheUtil.cacheNode;
-
-  if (!opts['cacheDir']) opts['cacheDir'] = cacheDir
 
   const {creator, cache} = Factory.from(opts.value, opts, (pp) => {
     console.log('burner.js loading...', pp);
@@ -81,6 +82,7 @@ const burn = async (opts) => {
     });
     onComplete();
   }).generateOutput().start();
+  return creator;
 }
 
 module.exports = {
