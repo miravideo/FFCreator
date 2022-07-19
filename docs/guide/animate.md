@@ -1,6 +1,6 @@
 # 关于动画
 
-> `FFCreator`的动画实现方式有多种, 还可以添加场景过渡特效动画
+> `FFCreator`的动画实现方式有多种, 还可以添加场景过渡特效动画。FFCreator的图形渲染部分使用的是渲染引擎 _inkpaint_ [https://github.com/drawcall/inkpaint](https://github.com/drawcall/inkpaint)。
 
 - ## 添加`effect`动画
 
@@ -89,7 +89,7 @@ image.addAnimate({
 
 ### 使用
 
-`addAnimate`支持从 A 到 B 的缓动动画, 您可以设置`from`、`to`属性。
+使用`setTransition`来设置场景切换动画, 还可以设置过度时间。
 
 ```javascript
 scene.setDuration(5);
