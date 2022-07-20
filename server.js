@@ -204,13 +204,19 @@ const sendReadyState = () => {
       'Content-Length': data.length,
     }
   }
-  request(options, (error, response) => {
-    if (error || response.statusCode !== 200) {
-      console.log("error", error);
-      console.log("response?.statusCode", response?.statusCode);
-      console.log("retry in 1s");
-      setTimeout(sendReadyState, 1000);
-    }
+  const req = request(options, res => {
+    res.on('data', d => {
+      console.log(`statusCode: ${res.statusCode}`);
+      if (res.statusCode !== 200) {
+        console.log("retry in 1s");
+        setTimeout(sendReadyState, 1000);
+      }
+    });
+  });
+  req.on('error', (err) => {
+    console.log("on error:", err);
+    console.log("retry in 1s");
+    setTimeout(sendReadyState, 1000);
   });
 }
 
