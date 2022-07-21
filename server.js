@@ -191,6 +191,7 @@ app
 app.listen(port);
 
 const sendReadyState = () => {
+  console.log("sendReadyState()");
   const data = JSON.stringify({
     "state": "READY"
   });
@@ -205,12 +206,13 @@ const sendReadyState = () => {
     }
   }
   const req = request(options, res => {
+    console.log(`statusCode: ${res.statusCode}`);
+    if (res.statusCode !== 200) {
+      console.log("retry in 1s");
+      setTimeout(sendReadyState, 1000);
+    }
     res.on('data', d => {
-      console.log(`statusCode: ${res.statusCode}`);
-      if (res.statusCode !== 200) {
-        console.log("retry in 1s");
-        setTimeout(sendReadyState, 1000);
-      }
+      console.log(d);
     });
   });
   req.on('error', (err) => {
@@ -218,6 +220,8 @@ const sendReadyState = () => {
     console.log("retry in 1s");
     setTimeout(sendReadyState, 1000);
   });
+  req.write(data);
+  req.end();
 }
 
 sendReadyState();
