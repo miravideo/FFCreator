@@ -61,8 +61,10 @@ router.post('/burn', async (ctx) => {
   }
 });
 
-router.get('/status', async (ctx) => {
-  const sync = "sync" in ctx.request.query ? (ctx.request.query.sync).toLowerCase() === "true" : true;
+router.all('/status', async (ctx) => {
+  const sync = "sync" in ctx.request.query
+    ? (ctx.request.query.sync).toLowerCase() === "true"
+    : ("sync" in ctx.request.body ? ctx.request.body.sync : true);
   const task_id = ctx.request.query.task_id;
 
   const lastMessage = burnProcessLastMessage[task_id];
@@ -127,8 +129,8 @@ const kill = (task_id) => {
   return false;
 }
 
-router.get('/cancel', async (ctx) => {
-  const task_id = ctx.request.query.task_id;
+router.all('/cancel', async (ctx) => {
+  const task_id = ctx.request.query.task_id || ctx.request.body.task_id;
   if (kill(task_id)) {
     ctx.type = 'text/plain; charset=utf-8';
     ctx.body = {
@@ -140,9 +142,9 @@ router.get('/cancel', async (ctx) => {
   }
 });
 
-router.get('/time', async (ctx) => {
+router.all('/time', async (ctx) => {
   const s = new PassThrough();
-  let count = 5;
+  let count = ctx.request.query.count || ctx.request.body.count || 5;
   const interval = setInterval(() => {
     const pushed = s.push(`${count--}\n`);
     console.log(pushed);
@@ -212,7 +214,7 @@ const sendReadyState = () => {
       setTimeout(sendReadyState, 1000);
     }
     res.on('data', d => {
-      console.log(d);
+      console.log(d.toString());
     });
   });
   req.on('error', (err) => {

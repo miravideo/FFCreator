@@ -11,7 +11,7 @@ process.on('message', async (msg) => {
     outputDir,
     onMessage: (msg) => {
       process.send(msg);
-      if (msg.status === 'finish') {
+      if (msg.step === 'finish') {
         console.log("===[subprocess] burn finish, exit()===");
         setTimeout(() => {
           process.exit();
