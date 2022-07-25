@@ -16,4 +16,4 @@ RUN cd /code/ffcreator && npm run do-ubuntu-install
 
 ADD . /code/ffcreator
 WORKDIR /code/ffcreator
-CMD ["node", "burner.js"]
+CMD ["xvfb-run", "-a", "-s", "\"-ac -screen 0 1280x1024x24\"", "node", "/code/ffcreator/burner.js"]

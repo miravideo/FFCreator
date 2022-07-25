@@ -53,9 +53,7 @@ const burn = async (opts) => {
     console.log(`Burn progress timestamp: ${Date.now() - t}ms`);
     onMessage({
       task_id,
-      step: "synthesis",
-      step_progress: round(number),
-      status: "progress",
+      step: "progress",
       progress: round(0.2 + number * 0.8),
     });
   }).on('preloading', (evt) => {
@@ -63,9 +61,7 @@ const burn = async (opts) => {
     console.log(`Burn preloading timestamp: ${Date.now() - t}ms`);
     onMessage({
       task_id,
-      step: "preloading",
-      step_progress: round(evt.loaded / evt.total),
-      status: "progress",
+      step: "progress",
       progress: round((evt.loaded / evt.total) * 0.05),
     });
   }).on('prepareMaterial', (evt) => {
@@ -73,9 +69,7 @@ const burn = async (opts) => {
     console.log(`Burn prepareMaterial timestamp: ${Date.now() - t}ms`);
     onMessage({
       task_id,
-      step: "prepareMaterial",
-      step_progress: round(evt.prepared / evt.total),
-      status: "progress",
+      step: "progress",
       progress: round(0.05 + (evt.prepared / evt.total) * 0.15),
     });
   }).on('complete', e => {
@@ -83,7 +77,7 @@ const burn = async (opts) => {
     console.log(`Burn completed timestamp: ${Date.now() - t}ms`);
     onMessage({
       task_id,
-      status: "finish",
+      step: "finish",
       result: e.output,
     });
     onComplete();
