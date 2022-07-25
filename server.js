@@ -57,6 +57,7 @@ router.post('/burn', async (ctx) => {
     ctx.type = 'text/plain; charset=utf-8';
     ctx.body = {
       status: 'ok',
+      code: 0,
     };
   }
 });
@@ -135,10 +136,14 @@ router.all('/cancel', async (ctx) => {
     ctx.type = 'text/plain; charset=utf-8';
     ctx.body = {
       status: 'ok',
+      code: 0,
     };
   } else {
     ctx.type = 'text/plain; charset=utf-8';
-    ctx.body = `task_id(${task_id}) not found`;
+    ctx.body = {
+      code: -1,
+      msg: `task_id(${task_id}) not found`
+    };
   }
 });
 
@@ -159,6 +164,7 @@ router.all('/time', async (ctx) => {
 router.get('/healthy', async (ctx) => {
   ctx.body = {
     status: 'ok',
+    code: 0,
   };
 })
 
@@ -177,6 +183,7 @@ router.get('/destroy', async (ctx) => {
   await destroy(() => {
     ctx.body = {
       status: 'ok',
+      code: 0,
     };
     // after response returned.
     setTimeout(() => {
