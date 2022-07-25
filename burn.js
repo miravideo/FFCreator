@@ -44,9 +44,15 @@ const burn = async (opts) => {
     onMessage({
       task_id,
       status: "start",
+      step: "start",
     });
-  }).on('error', e => {
-    console.error("creator error", e);
+  }).on('error', event => {
+    console.error("creator error", event);
+    onMessage({
+      task_id,
+      step:"error",
+      result: {type: event.type, pos: event.pos, error: event.error},
+    });
   }).on('progress', e => {
     let number = e.percent || 0;
     console.log(`Burn progress: ${(number * 100) >> 0}%`);
