@@ -161,7 +161,7 @@ router.all('/time', async (ctx) => {
   ctx.body = s
 })
 
-router.get('/healthy', async (ctx) => {
+router.all('/healthy', async (ctx) => {
   ctx.body = {
     status: 'ok',
     code: 0,
@@ -179,7 +179,7 @@ const destroy = async (callback) => {
   }
 }
 
-router.get('/destroy', async (ctx) => {
+router.all('/destroy', async (ctx) => {
   await destroy(() => {
     ctx.body = {
       status: 'ok',
