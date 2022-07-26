@@ -25,9 +25,11 @@ const updateLastMessage = (task_id, msg) => {
 }
 
 router.post('/burn', async (ctx) => {
+  console.log("/burn");
   const {draft_json: value, output_dir: outputDir, task_id, sync=false} = ctx.request.body;
   const s = sync ? new PassThrough() : null;
 
+  console.log("calling fork('server_burn_subprocess.js')")
   const burnProcess = fork('server_burn_subprocess.js', [], {
     stdio: "inherit",
   });
@@ -43,6 +45,7 @@ router.post('/burn', async (ctx) => {
     delete burnProcessMap[task_id];
     sendReadyState();
   });
+  console.log("calling sendMessage", {task_id, outputDir, value});
   burnProcess.send({
     value,
     task_id,
@@ -63,10 +66,12 @@ router.post('/burn', async (ctx) => {
 });
 
 router.all('/status', async (ctx) => {
+  console.log("/status");
   const sync = "sync" in ctx.request.query
     ? (ctx.request.query.sync).toLowerCase() === "true"
     : ("sync" in ctx.request.body ? ctx.request.body.sync : true);
   const task_id = ctx.request.query.task_id;
+  console.log({task_id, sync});
 
   const lastMessage = burnProcessLastMessage[task_id];
 
@@ -131,7 +136,9 @@ const kill = (task_id) => {
 }
 
 router.all('/cancel', async (ctx) => {
+  console.log("/cancel");
   const task_id = ctx.request.query.task_id || ctx.request.body.task_id;
+  console.log({task_id});
   if (kill(task_id)) {
     ctx.type = 'text/plain; charset=utf-8';
     ctx.body = {
@@ -148,11 +155,12 @@ router.all('/cancel', async (ctx) => {
 });
 
 router.all('/time', async (ctx) => {
+  console.log("/time", "ctx.request.query:", ctx.request.query, "ctx.request.body", ctx.request.body);
   const s = new PassThrough();
   let count = ctx.request.query.count || ctx.request.body.count || 5;
   const interval = setInterval(() => {
     const pushed = s.push(`${count--}\n`);
-    console.log(pushed);
+    console.log("pushed:", pushed);
     if (count <= 0) {
       s.push(null);// indicates end of the stream
       clearInterval(interval);
@@ -162,6 +170,7 @@ router.all('/time', async (ctx) => {
 })
 
 router.all('/healthy', async (ctx) => {
+  console.log("/healthy", "ctx.request.query:", ctx.request.query, "ctx.request.body", ctx.request.body);
   ctx.body = {
     status: 'ok',
     code: 0,
@@ -180,6 +189,7 @@ const destroy = async (callback) => {
 }
 
 router.all('/destroy', async (ctx) => {
+  console.log("/destroy", "ctx.request.query:", ctx.request.query, "ctx.request.body", ctx.request.body);
   await destroy(() => {
     ctx.body = {
       status: 'ok',

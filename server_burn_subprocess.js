@@ -5,6 +5,7 @@ let creator = null;
 process.on('message', async (msg) => {
   const {value, task_id, outputDir} = msg
   if (!value) return
+  console.log('calling burn()');
   creator = await burn({
     value,
     task_id,
