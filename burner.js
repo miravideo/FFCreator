@@ -2,10 +2,10 @@
 
 const path = require('path');
 const fs = require("fs");
+const os = require("os");
 const { Factory } = require('./lib/index');
 const CacheUtil = require('./lib/utils/cache');
 const { SocketClient } = require("./socket_client");
-const heapdump = require('heapdump');
 
 const outputDir = path.join(__dirname, './output/');
 const cacheDir = path.join(__dirname, './cache/');
@@ -106,4 +106,21 @@ if (process.env.SERVER_HOST) {
   parseCommandLineAndBurn();
 }
 
-
+setInterval(() => {
+  let memoryUsage = process.memoryUsage();
+  const roundToMB = (bytes) => { return Math.round(bytes / 1024 / 1024) }
+  const mem_info = {
+    "os.free": os.freemem(),
+    "os.total": os.totalmem(),
+    "process.rss" : memoryUsage['rss'],
+    "process.heapTotal" : memoryUsage['heapTotal'],
+    "process.heapUsed" : memoryUsage['heapUsed'],
+    "process.external" : memoryUsage['external'],
+    "process.arrayBuffers" : memoryUsage['arrayBuffers'],
+    // rss":"916","heapTotal":"29","heapUsed":"23","external":"746","arrayBuffers":"167"
+  }
+  Object.keys(mem_info).map(function(key) {
+    mem_info[key] = roundToMB(mem_info[key]);
+  });
+  console.log(`=== mem_info in MB: ${JSON.stringify(mem_info)}`)
+}, 1000);
