@@ -24,7 +24,7 @@ const burn = async (opts) => {
   Factory.debug = true;
   Factory.cacheNode = CacheUtil.cacheNode;
 
-  const {creator, cache} = Factory.from(opts.value, opts, (pp) => {
+  const { node: creator, cache } = Factory.from(opts.value, opts, (pp) => {
     console.log('burner.js loading...', pp);
   });
   await cache;
