@@ -1,11 +1,11 @@
 <miraml>
-  <canvas width="1920" height="1080" render="webgl" pathId="tt">
+  <canvas width="640" height="640" render="webgl" pathId="tt">
     <spine>
       <video src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/public2/190204084208765161.mp4" 
         duration="3" x="50vw" y="50vh" width="100vw" height="100vh" ss="4"></video>
       <video src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/public2/190204084208765161.mp4" 
         duration="3" x="50vw" y="50vh" width="100vw" height="100vh" ss="4"></video>
-      <trans key="cube" duration="2.8" >
+      <trans key="doorway" duration="2.8" >
       </trans>
       <video src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/public2/190204084208765161.mp4" 
         duration="3" x="50vw" y="50vh" width="100vw" height="100vh" ss="8"></video>
