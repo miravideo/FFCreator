@@ -55,3 +55,4 @@ yarn.lock
 cache*
 output*
 *.mp4
+*.m4a
