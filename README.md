@@ -10,17 +10,19 @@
 
 ## 简介
 
-`FFCreator`是一个很棒的项目，用js实现了视频的排版和烧制。但目前还有局限，比如没有**所见即所得的编辑功能**，排版难度高；以及任何对排版与样式的改动都需要写代码，也不利于分层与封装。
+`FFCreator`是一个很棒的项目，用JS实现了视频的排版和烧制。  
+但目前还有局限，比如没有**所见即所得的编辑功能**，排版难度高；  
+以及任何对排版与样式的改动都需要写代码，也不利于分层与封装。
 
-### 本项目对FFCreator的优化目标：
-1. 封装JSON接口，标准化的视频描述；
-2. 优化时长和排版的自适应能力，让模板对不同分辨率导出和不同尺寸、时长的源素材有更好的支持；
-3. 发挥JS能在浏览器端执行的优势，让FFCreator不仅仅可以用在后端烧制上，也可以用在`前端预览和编辑`上，达到前后端一致的效果；
+### 本项目的优化目标：
+1. 封装JSON接口，标准化视频描述，将代码逻辑和视频描述分离；
+2. 优化时长和排版的自适应能力（提供除px以外，百分比/rpx/vw/vh等单位），让模板对不同分辨率导出和不同尺寸、时长的源素材有更好的支持；
+3. 【重点】发挥JS能在浏览器端执行的优势，让FFCreator不仅仅可以用在后端烧制上，也可以用在**前端预览和编辑**上，达到前后端一致的效果；
 4. 加入更多的功能：滤镜、蒙版、动画等。
 
 ### 本项目不会涉及到的内容：
-1. 前端播放器控件，请参见: [MiraPlayer](https://miravideo.github.io/mira-player) (即将开源)
-2. 前端编辑器，请参见: MiraEditor (即将开源)
+1. 前端播放器，请参见: [MiraPlayer](https://miravideo.github.io/mira-player) (即将开源)
+2. 前端编辑器，请参见: [MiraEditor](https://miravideo.github.io/mira-editor) (即将开源)
 
 ## 视频描述格式
 采用JSON格式，树形结构描述的视频如下：
@@ -66,13 +68,47 @@ const video_data = {
 
 ### 视频预览 Browser JS
 ```javascript
+const { Factory } = require('ffcreator');
+const { node: creator } = Factory.from(video_data);
 
+// 初始化，加载源素材
+await creator.start();
+
+// 播放相关事件
+creator.on('loadedmetadata', () => {
+  // 加载完毕的回调
+  console.log(creator.duration);
+}).on('timeupdate', () => {
+  // 时间更新
+  console.log(creator.currentTime);
+}).on('seeking', () => {
+  // 选择时间开始
+}).on('seeked', () => {
+  // 选择时间结束
+}).on('play', () => {
+  // 播放
+}).on('pause', () => {
+  // 暂停
+}).on('playing', () => {
+  // 播放中
+}).on('ended', () => {
+  // 播放结束
+});
+
+// 播放
+creator.play(playbackRate);
+
+// 暂停
+creator.pause();
+
+// 选择时间
+creator.jumpTo(timeInMs);
 ```
 
 ### 视频烧录 Node.js
 ```javascript
 const { Factory } = require('ffcreator');
-const { node: creator } = Factory.from(video_json);
+const { node: creator } = Factory.from(video_data);
 
 creator.on('start', () => {
     console.log(`start`);
@@ -83,9 +119,23 @@ creator.on('start', () => {
     console.log(`progress: ${(number * 100) >> 0}%`);
   }).on('complete', e => {
     console.log(`completed: ${e.output}`);
-  }).generateOutput().start();
+  });
+
+// 新建文件夹
+creator.generateOutput()
+
+// 开始烧录
+creator.start();
 ```
 
+### 其他接口
+```javascript
+// 获取当前视频描述（JSON格式）
+creator.toJson()
+
+// 销毁, 回收内存
+await creator.destroy()
+```
 
 ## 附加
 
