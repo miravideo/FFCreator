@@ -139,13 +139,20 @@ await creator.destroy()
 
 ## 附加
 
-基于FFCreator实现的前端播放器 [DEMO](https://miravideo.github.io/mira-player)
+基于FFCreator实现的【前端播放器】 [DEMO](https://miravideo.github.io/mira-player)
 
 <p align="center">
   <img width="100%" src="https://miravideo.github.io/static/player.png" />
 </p>
 
+基于FFCreator实现的【前端编辑器】 [DEMO](https://miravideo.github.io/mira-editor)
+
+<p align="center">
+  <img width="100%" src="https://miravideo.github.io/static/editor.png"/>
+</p>
+
 米拉视频提供云端烧录API（即将公开）
+
 
 ## 联系方式
 遇到问题可以扫码加入微信群
