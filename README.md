@@ -64,6 +64,21 @@ const video_data = {
 
 详细的树形结构逻辑与节点属性列表，请参考：[视频描述文档](./JSONAPI.zh-CN.md)
 
+比如下面一段简单的XML即可实现文字作为视频蒙版动画的效果
+```xml
+<video x="50vw" y="50vh" height="100vh" src="oceans.mp4">
+  <text text="OCEAN" fontSize="100rpx" color="#FFF" x="50vw" y="50vh" asMask="true" duration="4">
+    <animate time="2" delay="2">
+      <from scale="1"></from>
+      <to scale="30" y="1500"></to>
+    </animate>
+  </text>
+</video>
+```
+
+<img src="https://miravideo.github.io/mira-player/preview-02.gif" width="640" height="360" />
+
+
 ## API示例
 
 ### 视频预览 Browser JS
@@ -139,13 +154,20 @@ await creator.destroy()
 
 ## 附加
 
-基于FFCreator实现的前端播放器 [DEMO](https://miravideo.github.io/mira-player)
+基于FFCreator实现的【前端播放器】 [DEMO](https://miravideo.github.io/mira-player)
 
 <p align="center">
   <img width="100%" src="https://miravideo.github.io/static/player.png" />
 </p>
 
+基于FFCreator实现的【前端编辑器(beta)】 [DEMO](https://miravideo.github.io/mira-editor)
+
+<p align="center">
+  <img width="100%" src="https://miravideo.github.io/static/editor.png"/>
+</p>
+
 米拉视频提供云端烧录API（即将公开）
+
 
 ## 联系方式
 遇到问题可以扫码加入微信群
