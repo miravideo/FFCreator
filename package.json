@@ -40,7 +40,6 @@
     "get-pixels": "github:miravideo/get-pixels",
     "gl-buffer": "^2.1.2",
     "gl-texture2d": "^2.1.0",
-    "gl-transition": "^1.13.0",
     "gl-transitions": "^1.43.0",
     "html2canvas": "^1.4.1",
     "koa": "^2.13.4",
