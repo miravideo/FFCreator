@@ -6,7 +6,7 @@ const fs = require("fs");
 const { Factory } = require('./lib/index');
 const CacheUtil = require('./lib/utils/cache');
 
-const cacheDir = path.join(__dirname, './cache/');
+const cacheDir = process.env['CACHE_DIR'] || path.join(__dirname, './cache/');
 if (!fs.existsSync(cacheDir)) {
   fs.mkdirSync(cacheDir);
 }
@@ -93,4 +93,5 @@ const burn = async (opts) => {
 
 module.exports = {
   burn,
+  cacheDir,
 }
