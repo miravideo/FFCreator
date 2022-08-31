@@ -6,6 +6,7 @@ const {cacheDir} = require('./burn.js')
 CacheUtil.cacheDir = cacheDir;
 
 const annotate = async (opts) => {
+  if (!opts['cacheDir']) opts['cacheDir'] = cacheDir
   Factory.debug = true;
   Factory.cacheNode = CacheUtil.cacheNode;
 

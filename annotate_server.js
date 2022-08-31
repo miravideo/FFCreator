@@ -4,7 +4,6 @@ const Koa = require('koa');
 const Router = require('@koa/router');
 const koaBody = require('koa-body');
 
-const {annotate, cacheDir} = require('./annotate.js')
 const {fork} = require("child_process");
 
 const args = require('minimist')(process.argv.slice(2))
@@ -16,10 +15,12 @@ const router = new Router();
 
 router.post('/annotate', async (ctx) => {
   const start = new Date();
-  const {draft_json: value, output_dir: outputDir, task_id, sync=false} = ctx.request.body;
+  const {draft_json: value, output_dir: outputDir, cache_dir: cacheDir, task_id, sync=false} = ctx.request.body;
 
   const subProcess = fork('annotate_server_subprocess.js', [], {
     stdio: "inherit",
+    env: {...process.env, 'FFCREATOR_CACHE_DIR': cacheDir },
+    // execArgv: ['--inspect-brk'],
   });
 
   const p1 = new Promise((resolve, reject)=>{
