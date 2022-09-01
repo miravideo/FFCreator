@@ -26,12 +26,13 @@ const updateLastMessage = (task_id, msg) => {
 
 router.post('/burn', async (ctx) => {
   console.log("/burn");
-  const {draft_json: value, output_dir: outputDir, task_id, sync=false} = ctx.request.body;
+  const {draft_json: value, output_dir: outputDir, cache_dir: cacheDir, task_id, sync=false} = ctx.request.body;
   const s = sync ? new PassThrough() : null;
 
   console.log("calling fork('server_burn_subprocess.js')")
   const burnProcess = fork('server_burn_subprocess.js', [], {
     stdio: "inherit",
+    env: {'FFCREATOR_CACHE_DIR': cacheDir },
   });
   burnProcess.on('message', (msg) => {
     console.log('burnProcess.msg:', msg);
