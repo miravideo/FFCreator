@@ -16,9 +16,15 @@ const annotate = async (opts) => {
   await cache;
 
   const sliceLen = 30;
-  const {videos, audio} = await creator.prepare(sliceLen);
-
-  return {videos, audio};
+  const result = await creator.prepare(sliceLen);
+  if ('videos' in result) {
+    const {videos, audio} = result
+    return {videos, audio};
+  } else if (result['type'] === 'canvas') {
+    return {videos:[result], audio: null};
+  } else {
+    throw Error("invalid result return from creator.prepare()")
+  }
 
 }
 
@@ -34,10 +40,10 @@ async function parseCommandLineAndAnnotate() {
   if (require.main !== module) return //ignore if not executed from commandline
   const {videos, audio} = await parseCommandLineAndAnnotate()
   console.log(videos, audio);
-  for (const i in videos) {
-    fs.writeFileSync(`anno_v${i}.json`, JSON.stringify(videos[i]));
-  }
-  fs.writeFileSync(`anno_a.json`, JSON.stringify(audio));
+  // for (const i in videos) {
+  //   fs.writeFileSync(`anno_v${i}.json`, JSON.stringify(videos[i]));
+  // }
+  // fs.writeFileSync(`anno_a.json`, JSON.stringify(audio));
 })()
 
 module.exports = {annotate, cacheDir};
