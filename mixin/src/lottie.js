@@ -2,7 +2,6 @@
 
 const lottie = require('lottie-nodejs');
 const Mixin = require('./base');
-const { getRemote } = require("../../lib/utils/xhr");
 const { isWebWorker } = require("browser-or-node");
 
 class LottieMixin extends Mixin {
@@ -13,9 +12,7 @@ class LottieMixin extends Mixin {
     lottie.setCanvas(this.klassHolder);
 
     // load json
-    const res = await getRemote(conf.src, 'cid');
-    const json = await res.data.text();
-    const animationData = JSON.parse(json);
+    const animationData = await this.getRemoteData(conf.src);
     let { w, h, nm, fr, ip, op } = animationData;
 
     // resize canvas

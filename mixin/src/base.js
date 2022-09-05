@@ -1,5 +1,6 @@
 'use strict';
 const { isWebWorker } = require("browser-or-node");
+const { getRemote } = require("../../lib/utils/xhr");
 
 class Mixin {
   constructor() {
@@ -26,6 +27,16 @@ class Mixin {
     this.ctx = this.drawCanvas.getContext('2d');
     this.klassHolder = { Canvas, Image };
     this.createCanvas = createCanvas;
+  }
+
+  async getRemoteData(url, parseJson = true) {
+    try {
+      const resp = await getRemote(url, 'cid');
+      const text = await resp.data.text();
+      return parseJson ? JSON.parse(text) : text;
+    } catch (e) {
+      return null;
+    }
   }
 
   async init(conf) {

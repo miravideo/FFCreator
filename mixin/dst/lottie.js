@@ -21,10 +21,6 @@ const lottie = __webpack_require__(1);
 const Mixin = __webpack_require__(5);
 
 const {
-  getRemote
-} = __webpack_require__(9);
-
-const {
   isWebWorker
 } = __webpack_require__(6);
 
@@ -34,9 +30,7 @@ class LottieMixin extends Mixin {
 
     lottie.setCanvas(this.klassHolder); // load json
 
-    const res = await getRemote(conf.src, 'cid');
-    const json = await res.data.text();
-    const animationData = JSON.parse(json);
+    const animationData = await this.getRemoteData(conf.src);
     let {
       w,
       h,
@@ -16088,6 +16082,10 @@ const {
   isWebWorker
 } = __webpack_require__(6);
 
+const {
+  getRemote
+} = __webpack_require__(7);
+
 class Mixin {
   constructor() {
     this.MAX_TIME = 99999;
@@ -16108,7 +16106,7 @@ class Mixin {
   initNode() {
     const {
       nodeRequire
-    } = __webpack_require__(10);
+    } = __webpack_require__(8);
 
     const {
       createCanvas,
@@ -16123,6 +16121,16 @@ class Mixin {
       Image
     };
     this.createCanvas = createCanvas;
+  }
+
+  async getRemoteData(url, parseJson = true) {
+    try {
+      const resp = await getRemote(url, 'cid');
+      const text = await resp.data.text();
+      return parseJson ? JSON.parse(text) : text;
+    } catch (e) {
+      return null;
+    }
   }
 
   async init(conf) {
@@ -16237,9 +16245,7 @@ exports.isNode = isNode;
 exports.isJsDom = isJsDom;
 
 /***/ }),
-/* 7 */,
-/* 8 */,
-/* 9 */
+/* 7 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -16253,11 +16259,11 @@ const {
 const {
   nodeRequire,
   genUuid
-} = __webpack_require__(10);
+} = __webpack_require__(8);
 
 const fetch = nodeRequire("./node-fetch");
 
-const md5 = __webpack_require__(30);
+const md5 = __webpack_require__(28);
 
 const __req = {};
 const __xhrs = {};
@@ -16335,7 +16341,7 @@ const XhrUtil = {
 module.exports = XhrUtil;
 
 /***/ }),
-/* 10 */
+/* 8 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -16359,7 +16365,7 @@ const cache = {};
 const Utils = {
   safeRequire(pkg) {
     try {
-      return __webpack_require__(11)(pkg);
+      return __webpack_require__(9)(pkg);
     } catch (e) {}
   },
 
@@ -16372,7 +16378,7 @@ const Utils = {
   },
 
   async getPixels(url, type) {
-    const getPixels = __webpack_require__(12);
+    const getPixels = __webpack_require__(10);
 
     return new Promise((resolve, reject) => {
       getPixels(url, type, (err, pixels, frameInfo) => {
@@ -16587,7 +16593,7 @@ const Utils = {
 module.exports = Utils;
 
 /***/ }),
-/* 11 */
+/* 9 */
 /***/ ((module) => {
 
 function webpackEmptyContext(req) {
@@ -16597,29 +16603,29 @@ function webpackEmptyContext(req) {
 }
 webpackEmptyContext.keys = () => ([]);
 webpackEmptyContext.resolve = webpackEmptyContext;
-webpackEmptyContext.id = 11;
+webpackEmptyContext.id = 9;
 module.exports = webpackEmptyContext;
 
 /***/ }),
-/* 12 */
+/* 10 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-var path = __webpack_require__(13);
+var path = __webpack_require__(11);
 
-var ndarray = __webpack_require__(14);
+var ndarray = __webpack_require__(12);
 
-var GifReader = (__webpack_require__(17).GifReader);
+var GifReader = (__webpack_require__(15).GifReader);
 
-var Buffer = (__webpack_require__(18).Buffer);
+var Buffer = (__webpack_require__(16).Buffer);
 
-var pack = __webpack_require__(21);
+var pack = __webpack_require__(19);
 
-var through = __webpack_require__(27);
+var through = __webpack_require__(25);
 
-var parseDataURI = __webpack_require__(29);
+var parseDataURI = __webpack_require__(27);
 
 function defaultImage(url, cb) {
   var img = new Image();
@@ -16771,7 +16777,7 @@ module.exports = function getPixels(url, type, cb) {
 };
 
 /***/ }),
-/* 13 */
+/* 11 */
 /***/ ((module) => {
 
 "use strict";
@@ -17328,12 +17334,12 @@ posix.posix = posix;
 module.exports = posix;
 
 /***/ }),
-/* 14 */
+/* 12 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-var iota = __webpack_require__(15);
+var iota = __webpack_require__(13);
 
-var isBuffer = __webpack_require__(16);
+var isBuffer = __webpack_require__(14);
 
 var hasTypedArrays = typeof Float64Array !== "undefined";
 
@@ -17695,7 +17701,7 @@ function wrappedNDArrayCtor(data, shape, stride, offset) {
 module.exports = wrappedNDArrayCtor;
 
 /***/ }),
-/* 15 */
+/* 13 */
 /***/ ((module) => {
 
 "use strict";
@@ -17714,7 +17720,7 @@ function iota(n) {
 module.exports = iota;
 
 /***/ }),
-/* 16 */
+/* 14 */
 /***/ ((module) => {
 
 /*!
@@ -17739,7 +17745,7 @@ function isSlowBuffer(obj) {
 }
 
 /***/ }),
-/* 17 */
+/* 15 */
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -18610,7 +18616,7 @@ try {
 } catch (e) {}
 
 /***/ }),
-/* 18 */
+/* 16 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -18624,9 +18630,9 @@ try {
 /* eslint-disable no-proto */
 
 
-const base64 = __webpack_require__(19);
+const base64 = __webpack_require__(17);
 
-const ieee754 = __webpack_require__(20);
+const ieee754 = __webpack_require__(18);
 
 const customInspectSymbol = typeof Symbol === 'function' && typeof Symbol['for'] === 'function' // eslint-disable-line dot-notation
 ? Symbol['for']('nodejs.util.inspect.custom') // eslint-disable-line dot-notation
@@ -20696,7 +20702,7 @@ function BufferBigIntNotDefined() {
 }
 
 /***/ }),
-/* 19 */
+/* 17 */
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -20821,7 +20827,7 @@ function fromByteArray(uint8) {
 }
 
 /***/ }),
-/* 20 */
+/* 18 */
 /***/ ((__unused_webpack_module, exports) => {
 
 /*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
@@ -20915,15 +20921,15 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 };
 
 /***/ }),
-/* 21 */
+/* 19 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-var ndarray = __webpack_require__(14);
+var ndarray = __webpack_require__(12);
 
-var do_convert = __webpack_require__(22);
+var do_convert = __webpack_require__(20);
 
 module.exports = function convert(arr, result) {
   var shape = [],
@@ -20949,10 +20955,10 @@ module.exports = function convert(arr, result) {
 };
 
 /***/ }),
-/* 22 */
+/* 20 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__(23)({
+module.exports = __webpack_require__(21)({
   "args": ["array", "scalar", "index"],
   "pre": {
     "body": "{}",
@@ -20992,13 +20998,13 @@ module.exports = __webpack_require__(23)({
 });
 
 /***/ }),
-/* 23 */
+/* 21 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-var createThunk = __webpack_require__(24);
+var createThunk = __webpack_require__(22);
 
 function Procedure() {
   this.argTypes = [];
@@ -21117,7 +21123,7 @@ function compileCwise(user_args) {
 module.exports = compileCwise;
 
 /***/ }),
-/* 24 */
+/* 22 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -21144,7 +21150,7 @@ module.exports = compileCwise;
 //   return thunk(compile.bind1(proc))
 // }
 
-var compile = __webpack_require__(25);
+var compile = __webpack_require__(23);
 
 function createThunk(proc) {
   var code = ["'use strict'", "var CACHED={}"];
@@ -21208,13 +21214,13 @@ function createThunk(proc) {
 module.exports = createThunk;
 
 /***/ }),
-/* 25 */
+/* 23 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-var uniq = __webpack_require__(26); // This function generates very simple loops analogous to how you typically traverse arrays (the outermost loop corresponds to the slowest changing index, the innermost loop to the fastest changing index)
+var uniq = __webpack_require__(24); // This function generates very simple loops analogous to how you typically traverse arrays (the outermost loop corresponds to the slowest changing index, the innermost loop to the fastest changing index)
 // TODO: If two arrays have the same strides (and offsets) there is potential for decreasing the number of "pointers" and related variables. The drawback is that the type signature would become more specific and that there would thus be less potential for caching, but it might still be worth it, especially when dealing with large numbers of arguments.
 
 
@@ -21661,7 +21667,7 @@ function generateCWiseOp(proc, typesig) {
 module.exports = generateCWiseOp;
 
 /***/ }),
-/* 26 */
+/* 24 */
 /***/ ((module) => {
 
 "use strict";
@@ -21738,10 +21744,10 @@ function unique(list, compare, sorted) {
 module.exports = unique;
 
 /***/ }),
-/* 27 */
+/* 25 */
 /***/ ((module, exports, __webpack_require__) => {
 
-var Stream = __webpack_require__(28); // through
+var Stream = __webpack_require__(26); // through
 //
 // a stream that does nothing but re-emit the input.
 // useful for aggregating a series of changing but not ending streams into one stream)
@@ -21852,13 +21858,13 @@ function through(write, end, opts) {
 }
 
 /***/ }),
-/* 28 */
+/* 26 */
 /***/ (() => {
 
 /* (ignored) */
 
 /***/ }),
-/* 29 */
+/* 27 */
 /***/ ((module) => {
 
 /**
@@ -21908,14 +21914,14 @@ function dataUriToBuffer(uri) {
 }
 
 /***/ }),
-/* 30 */
+/* 28 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 (function () {
-  var crypt = __webpack_require__(31),
-      utf8 = (__webpack_require__(32).utf8),
-      isBuffer = __webpack_require__(16),
-      bin = (__webpack_require__(32).bin),
+  var crypt = __webpack_require__(29),
+      utf8 = (__webpack_require__(30).utf8),
+      isBuffer = __webpack_require__(14),
+      bin = (__webpack_require__(30).bin),
       // The core
   md5 = function (message, options) {
     // Convert to byte array
@@ -22054,7 +22060,7 @@ function dataUriToBuffer(uri) {
 })();
 
 /***/ }),
-/* 31 */
+/* 29 */
 /***/ ((module) => {
 
 (function () {
@@ -22140,7 +22146,7 @@ function dataUriToBuffer(uri) {
 })();
 
 /***/ }),
-/* 32 */
+/* 30 */
 /***/ ((module) => {
 
 var charenc = {
