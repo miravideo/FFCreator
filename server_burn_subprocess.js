@@ -28,7 +28,7 @@ process.on('message', async (msg) => {
     process.send({
       task_id,
       step:"error",
-      result: {error: event.error},
+      result: {error: e.toString()},
     });
     setTimeout(() => {
       process.exit(1);
