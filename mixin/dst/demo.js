@@ -467,6 +467,7 @@ class Mixin {
         });
       }
 
+      const msgid = e.data.msgid;
       const func = this[e.data.method];
 
       if (!func || typeof func !== 'function') {
@@ -476,7 +477,10 @@ class Mixin {
       }
 
       const resp = await func.call(this, e.data);
-      postMessage(resp);
+      postMessage({
+        resp,
+        msgid
+      });
     });
   }
 
