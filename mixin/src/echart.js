@@ -14,7 +14,7 @@ class EChartMixin extends Mixin {
     await super.init(conf);
     let { width=128, height=128, duration, theme="light", 
       speed, ani=true, movieType='start', colors,
-      option, src, data } = conf;
+      option, src, template, data } = conf;
     this.resize(width, height);
     this.dataTimer = 0; // set to -1 if update at begin is needed
     this.movieType = movieType;
@@ -29,7 +29,8 @@ class EChartMixin extends Mixin {
           option = option.innerHTML;
         }
       } catch (e) { return; }
-    } else if (src.startsWith('http')) {
+    } else if ((src && src.startsWith('http')) || (template && template.startsWith('http'))) {
+      src = src || template;
       option = await this.getRemoteData(src, false);
     }
 
