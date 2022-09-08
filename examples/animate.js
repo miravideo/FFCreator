@@ -68,25 +68,9 @@ const createFFTask = () => {
   text.setStyle({ padding: 10 });
   scene1.addChild(text);
 
-  // use FFTween
   const fdragon = new FFImage({ path: dragon, x: 500, y: 700, alpha: 0 });
   fdragon.setAnchor(0.5, 1);
   scene1.addChild(fdragon);
-  FFTween.fromTo(
-    fdragon,
-    1,
-    {
-      alpha: 0,
-      scale: 0.1,
-    },
-    {
-      scale: 1,
-      alpha: 1,
-      delay: 2,
-      y: 550,
-      ease: 'Back.Out',
-    },
-  );
 
   const fdragon2 = new FFImage({ path: dragon, x: 700, y: 300, width: 320 / 2, height: 402 / 2 });
   fdragon2.addBlend('Add');
