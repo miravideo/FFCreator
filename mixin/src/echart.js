@@ -14,7 +14,7 @@ class EChartMixin extends Mixin {
     await super.init(conf);
     let { width=128, height=128, duration, theme="light", 
       speed, ani=true, movieType='start', colors,
-      option, src, data } = conf;
+      option, src, template, data } = conf;
     this.resize(width, height);
     this.dataTimer = 0; // set to -1 if update at begin is needed
     this.movieType = movieType;
@@ -29,7 +29,8 @@ class EChartMixin extends Mixin {
           option = option.innerHTML;
         }
       } catch (e) { return; }
-    } else if (src.startsWith('http')) {
+    } else if ((src && src.startsWith('http')) || (template && template.startsWith('http'))) {
+      src = src || template;
       option = await this.getRemoteData(src, false);
     }
 
@@ -39,15 +40,7 @@ class EChartMixin extends Mixin {
     }
 
     if (data) {
-      try {
-        if (typeof(data) === 'object' && data.innerHTML) {
-          data = JSON.parse(data.innerHTML);
-        } else if (typeof(data) === 'string' && data.startsWith('http')) {
-          data = await this.getRemoteData(data);
-        } else if (typeof(data) === 'string') {
-          data = JSON.parse(data);
-        }
-      } catch (e) { }
+      data = await this.parseData(data);
       // render template
       if (Array.isArray(data) && Array.isArray(data[0])) {
         this.data = data; // todo: clone?
@@ -97,7 +90,39 @@ class EChartMixin extends Mixin {
     animation._time = 0; // 时钟归零
     animation.update(false, 0, 0); // init seek & update, will trigger start()
     return { width: this.width, height: this.height, duration: this.length, 
-      speed: this.speed, loop: false };
+      speed: this.speed, loop: false, data };
+  }
+
+  async update(conf) {
+    this.conf = {...this.conf, ...conf};
+    let { duration, speed } = this.conf;
+    if (conf.data) {
+      conf.data = await this.parseData(conf.data);
+      if (this.data) this.data = conf.data;
+      this.length = this.data[0].length;
+      this.speed = Number(speed) || (this.length / duration);
+      if (this.template && this.data) this.updateData(0);
+    }
+    if (conf.width !== this.width || conf.height !== this.height) {
+      const {width, height} = conf;
+      this.chart.resize({width, height});
+      this.resize(width, height);
+    }
+    return { width: this.width, height: this.height, duration: this.length, 
+      speed: this.speed, loop: false, data: this.data };
+  }
+
+  async parseData(data) {
+    try {
+      if (typeof(data) === 'object' && data.innerHTML) {
+        data = JSON.parse(data.innerHTML);
+      } else if (typeof(data) === 'string' && data.startsWith('http')) {
+        data = await this.getRemoteData(data);
+      } else if (typeof(data) === 'string') {
+        data = JSON.parse(data);
+      }
+    } catch (e) { }
+    return data;
   }
 
   render(time, delta) {

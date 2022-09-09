@@ -32,7 +32,7 @@ router.post('/burn', async (ctx) => {
   console.log("calling fork('server_burn_subprocess.js')")
   const burnProcess = fork('server_burn_subprocess.js', [], {
     stdio: "inherit",
-    env: {'FFCREATOR_CACHE_DIR': cacheDir },
+    env: {...process.env, 'FFCREATOR_CACHE_DIR': cacheDir },
   });
   burnProcess.on('message', (msg) => {
     console.log('burnProcess.msg:', msg);
@@ -62,6 +62,7 @@ router.post('/burn', async (ctx) => {
     ctx.body = {
       status: 'ok',
       code: 0,
+      task_id,
     };
   }
 });

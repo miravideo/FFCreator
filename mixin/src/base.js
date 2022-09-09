@@ -73,13 +73,14 @@ class Mixin {
         return postMessage({ err: `invalid request!` });
       }
 
+      const msgid = e.data.msgid;
       const func = this[e.data.method];
       if (!func || typeof func !== 'function') {
         return postMessage({ err: `method not found: ${e.data.method}` });
       }
 
       const resp = await func.call(this, e.data);
-      postMessage(resp);
+      postMessage({resp, msgid});
     });
   }
 
