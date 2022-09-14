@@ -16,7 +16,7 @@ class EChartMixin extends Mixin {
       speed, ani=true, movieType='start', colors,
       option, src, template, data } = conf;
     this.resize(width, height);
-    this.dataTimer = 0; // set to -1 if update at begin is needed
+    this.dataTimer = -1; // set to -1 if update at begin is needed
     this.movieType = movieType;
     this.color = colors || COLORS;
 
@@ -101,7 +101,7 @@ class EChartMixin extends Mixin {
       if (this.data) this.data = conf.data;
       this.length = this.data[0].length;
       this.speed = Number(speed) || (this.length / duration);
-      if (this.template && this.data) this.updateData(0);
+      this.dataTimer = -1; // reset
     }
     if (conf.width !== this.width || conf.height !== this.height) {
       const {width, height} = conf;
@@ -136,7 +136,7 @@ class EChartMixin extends Mixin {
     }
 
     // todo: seek到小于1的时候，如何恢复开场的动画？
-    if (delta <= 0 && time > 0.02) {
+    if (delta <= 0) { // && time > 0.02
       // seek的时候，需要把动画都重置
       animation.update(true, 0);
       animation.stop();
