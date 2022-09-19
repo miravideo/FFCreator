@@ -1,14 +1,35 @@
-<miraml>
-  <canvas width="640" height="640" render="webgl" pathId="tt">
-    <spine>
-      <video src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/public2/190204084208765161.mp4" 
-        duration="3" x="50vw" y="50vh" width="100vw" height="100vh" ss="4"></video>
-      <video src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/public2/190204084208765161.mp4" 
-        duration="3" x="50vw" y="50vh" width="100vw" height="100vh" ss="4"></video>
-      <trans key="doorway" duration="2.8" >
-      </trans>
-      <video src="https://mira-1255830993.cos.ap-shanghai.myqcloud.com/public2/190204084208765161.mp4" 
-        duration="3" x="50vw" y="50vh" width="100vw" height="100vh" ss="8"></video>
-    </spine>
-  </canvas>
-</miraml>
+<miraml author="ZhaoJun" name="Composite" mns="https://cos.mirav.cn/player/">
+    <canvas width="1280" height="720">
+      <spine>
+        <!-- 第一幕，0~2秒 -->
+        <video x="50vw" y="50vh" width="100vw" src="https://cos.mirav.cn/player/pic_oceans.mp4" duration="10" ss="1">
+          <image zIndex="2" x="50rpx" y="30rpx" height="50rpx" width="50rpx" src="https://cos.mirav.cn/player/pic1.jpg">
+          </image>
+        </video>
+        <!-- 转场1 -->
+        <trans key="cube"></trans>
+        <!-- 第二幕，2~4秒 -->
+        <video x="50vw" y="50vh" width="100vw" src="https://cos.mirav.cn/player/pic_oceans.mp4" duration="2" ss="8">
+          <image zIndex="2" x="100rpx" y="30rpx" height="50rpx" width="50rpx" src="https://cos.mirav.cn/player/pic2.jpg"></image>
+        </video>
+        <!-- 转场2 -->
+        <trans key="cube"></trans>
+        <!-- 第三幕，4~6秒 -->
+        <scene name="复合片段">
+          <video x="50vw" y="50vh" width="100vw" src="https://cos.mirav.cn/player/pic_oceans.mp4" duration="2" ss="15">
+            <image zIndex="2" x="150rpx" y="30rpx" height="50rpx" width="50rpx" src="https://cos.mirav.cn/player/pic3.jpg"></image>
+          </video>
+        </scene>
+        <!-- 转场3 -->
+        <trans key="cube"></trans>
+        <!-- 第四幕，6~8秒 -->
+        <video x="50vw" y="50vh" width="100vw" src="https://cos.mirav.cn/player/pic_oceans.mp4" duration="2" ss="20"></video>
+      </spine>
+      <mixin-echart refId="chart-demo" x="50vw" y="50vh" width="1100" height="600" movieType="move"   
+        theme="dark" opacity="0.5" zIndex="9" speed="5" duration="15" version="1.0.1"
+        template="https://cos.mirav.cn/player/chart-template-01.tpl" 
+        data="https://cos.mirav.cn/player/chart-data-01.json">
+      </mixin-echart>
+      <audio audio="true" src="https://cos.mirav.cn/player/oceans.mp3" duration="10" fadeOut="1"></audio>
+    </canvas>
+  </miraml>
