@@ -38,6 +38,7 @@
     "eventemitter3": "^4.0.7",
     "ffmpeg-probe": "^1.0.6",
     "fluent-ffmpeg": "^2.1.2",
+    "fourier-transform": "^1.1.2",
     "fs-extra": "^9.0.1",
     "get-pixels": "git+http://gitlab.mirav.cn/open/get-pixels.git",
     "gl-buffer": "^2.1.2",
@@ -60,7 +61,8 @@
     "rmfr": "^2.0.0",
     "siz": "^1.2.2",
     "soundtouchjs": "git+http://gitlab.mirav.cn/open/SoundTouchJS.git",
-    "stackblur-canvas": "^2.5.0"
+    "stackblur-canvas": "^2.5.0",
+    "web-audio-api": "^0.2.2"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
