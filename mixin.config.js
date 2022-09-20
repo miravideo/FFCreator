@@ -16,7 +16,7 @@ const plugins = [
     })
 ];
 
-const mixinList = ['lottie', 'echart', 'demo'];
+const mixinList = ['lottie', 'echart', 'demo', 'siri-curve'];
 const entry = {};
 for (let mixin of mixinList) {
     entry[mixin] = [path.resolve(base, 'src', `${mixin}.js`)];
