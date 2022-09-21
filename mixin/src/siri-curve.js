@@ -9,8 +9,8 @@ class SiriCurveMixin extends Mixin {
     let { width=128, height=128, style } = conf;
     this.resize(width, height);
     this.siriWave = new SiriWave({
-      style: style === 'ios' ? 'ios' : 'ios9', 
-      canvas: this.canvas, 
+      style: style === 'ios' ? 'ios' : 'ios9',
+      canvas: this.canvas,
       width: this.width,
       height: this.height,
       autostart: false,
@@ -22,7 +22,7 @@ class SiriCurveMixin extends Mixin {
     const { spd, amp } = conf;
     if (spd !== undefined) this.siriWave.setSpeed(spd);
     if (amp !== undefined) this.siriWave.setAmplitude(amp);
-    console.log({spd, amp});
+    // console.log({spd, amp});
   }
 
   async render(time, delta) {
