@@ -16233,9 +16233,8 @@ class Mixin {
           delete this.msgs[msgid];
           reject();
         }, timeout);
-      } else {// const resp = await this.worker[msg.method](msg);
-        // // console.log('on resp', {req: msg, resp, time: Date.now() - ss});
-        // resolve(resp);
+      } else if (this.execCallback) {
+        resolve(await this.execCallback(method, args));
       }
     });
   }
