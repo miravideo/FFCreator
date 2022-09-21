@@ -378,6 +378,7 @@ const {
 class Mixin {
   constructor() {
     this.MAX_TIME = 99999;
+    this.msgs = {};
     if (isWebWorker) this.initWebWorker();else this.initNode();
   }
 
@@ -461,7 +462,16 @@ class Mixin {
 
   start() {
     addEventListener('message', async e => {
-      if (typeof e.data !== 'object' || !e.data.method) {
+      if (typeof e.data !== 'object') return postMessage({
+        err: `invalid request!`
+      });
+
+      if (e.data.resp && this.msgs[e.data.msgid]) {
+        const callback = this.msgs[e.data.msgid];
+        callback(e.data.resp);
+        delete this.msgs[e.data.msgid];
+        return;
+      } else if (!e.data.method) {
         return postMessage({
           err: `invalid request!`
         });
@@ -482,6 +492,45 @@ class Mixin {
         msgid
       });
     });
+  }
+
+  async getImageData(src) {
+    return await this.exec('getImage', {
+      src
+    });
+  }
+
+  exec(method, args, timeout = 10000) {
+    return new Promise(async (resolve, reject) => {
+      // set callback
+      if (isWebWorker) {
+        const msgid = this.genUuid();
+
+        this.msgs[msgid] = data => {
+          // console.log('on resp', {req: msg, resp: data, time: Date.now() - ss});
+          if (typeof data === 'object' && data.err) return reject(data);
+          resolve(data);
+        }; // call
+
+
+        postMessage({ ...args,
+          method,
+          msgid
+        }); // timeout
+
+        setTimeout(() => {
+          delete this.msgs[msgid];
+          reject();
+        }, timeout);
+      } else {// const resp = await this.worker[msg.method](msg);
+        // // console.log('on resp', {req: msg, resp, time: Date.now() - ss});
+        // resolve(resp);
+      }
+    });
+  }
+
+  genUuid() {
+    return Math.random().toString(36).substr(-8) + Math.random().toString(36).substr(-8);
   }
 
   destroy() {

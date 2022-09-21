@@ -16,7 +16,7 @@ const plugins = [
     })
 ];
 
-const mixinList = ['lottie', 'echart', 'demo', 'siri-curve'];
+const mixinList = ['lottie', 'echart', 'demo', 'siri-curve', 'disk-cover'];
 const entry = {};
 for (let mixin of mixinList) {
     entry[mixin] = [path.resolve(base, 'src', `${mixin}.js`)];
@@ -49,6 +49,7 @@ module.exports = {
             "os": false,
             "assert": false,
             "constants": false,
+            'react-native-fs': false,
             "path": require.resolve("path-browserify"),
 	        "events": false,
 	    }
