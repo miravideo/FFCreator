@@ -71,7 +71,7 @@ class Mixin {
   start() {
     addEventListener('message', async (e) => {
       if (typeof(e.data) !== 'object') return postMessage({ err: `invalid request!` });
-      if (e.data.resp && this.msgs[e.data.msgid]) {
+      if (this.msgs[e.data.msgid]) {
         const callback = this.msgs[e.data.msgid];
         callback(e.data.resp);
         delete this.msgs[e.data.msgid];
@@ -101,7 +101,7 @@ class Mixin {
       if (isWebWorker) {
         const msgid = this.genUuid();
         this.msgs[msgid] = (data) => {
-          // console.log('on resp', {req: msg, resp: data, time: Date.now() - ss});
+          // console.log('on resp!!', {req: args, resp: data});
           if (typeof(data) === 'object' && data.err) return reject(data);
           resolve(data);
         }
