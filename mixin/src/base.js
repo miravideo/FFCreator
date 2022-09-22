@@ -30,6 +30,8 @@ class Mixin {
     this.createCanvas = createCanvas;
   }
 
+  async update(conf) {}
+
   async getRemoteData(url, parseJson = true) {
     try {
       const resp = await getRemote(url, 'cid');
@@ -71,19 +73,19 @@ class Mixin {
   start() {
     addEventListener('message', async (e) => {
       if (typeof(e.data) !== 'object') return postMessage({ err: `invalid request!` });
-      if (this.msgs[e.data.msgid]) {
-        const callback = this.msgs[e.data.msgid];
+      const msgid = e.data.msgid;
+      if (this.msgs[msgid]) {
+        const callback = this.msgs[msgid];
         callback(e.data.resp);
-        delete this.msgs[e.data.msgid];
+        delete this.msgs[msgid];
         return;
       } else if (!e.data.method) {
-        return postMessage({ err: `invalid request!` });
+        return postMessage({ err: `invalid request!`, msgid });
       }
 
-      const msgid = e.data.msgid;
       const func = this[e.data.method];
       if (!func || typeof func !== 'function') {
-        return postMessage({ err: `method not found: ${e.data.method}` });
+        return postMessage({ err: `method not found: ${e.data.method}`, msgid });
       }
 
       const resp = await func.call(this, e.data);
