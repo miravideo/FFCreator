@@ -61,7 +61,7 @@
     "progress-stream": "^2.0.0",
     "rmfr": "^2.0.0",
     "siz": "^1.2.2",
-    "soundtouchjs": "git+http://gitlab.mirav.cn/open/SoundTouchJS.git",
+    "soundtouchjs": "^0.1.30",
     "stackblur-canvas": "^2.5.0",
     "web-audio-api": "^0.2.2"
   },
