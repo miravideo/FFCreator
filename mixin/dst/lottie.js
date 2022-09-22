@@ -16210,7 +16210,7 @@ class Mixin {
   }
 
   async getImageData(src) {
-    return await this.exec('getImage', {
+    return await this.exec('getImageData', {
       src
     });
   }

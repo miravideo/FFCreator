@@ -94,7 +94,7 @@ class Mixin {
   }
 
   async getImageData(src) {
-    return await this.exec('getImage', {src});
+    return await this.exec('getImageData', {src});
   }
 
   exec(method, args, timeout=10000) {
