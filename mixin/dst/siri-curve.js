@@ -7,7 +7,7 @@
 		exports["mixin"] = factory();
 	else
 		root["mixin"] = factory();
-})(this, function() {
+})(this, () => {
 return /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
@@ -549,10 +549,10 @@ module.exports = Mixin;
 
 /***/ }),
 
-/***/ 570:
+/***/ 569:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const SiriWave = __webpack_require__(571); // import SiriWave from "./siri-curve/siriwave.umd.min.js";
+const SiriWave = __webpack_require__(570); // import SiriWave from "./siri-curve/siriwave.umd.min.js";
 
 
 const Mixin = __webpack_require__(5);
@@ -577,6 +577,8 @@ class SiriCurveMixin extends Mixin {
       height: this.height,
       autostart: false
     });
+    this.containerWidth = width;
+    this.containerHeight = height;
     return {
       width: this.width,
       height: this.height,
@@ -587,10 +589,29 @@ class SiriCurveMixin extends Mixin {
   async update(conf) {
     const {
       spd,
-      amp
+      amp,
+      style
     } = conf;
+    if (conf.width) this.containerWidth = conf.width;
+    if (conf.height) this.containerHeight = conf.height;
+
+    if (conf.width && conf.width !== this.width || conf.height && conf.height !== this.height) {
+      this.resize(conf.width || this.containerWidth, conf.height || this.containerHeight);
+      this.siriWave = new SiriWave({
+        style: style === 'ios' ? 'ios' : 'ios9',
+        canvas: this.canvas,
+        width: this.containerWidth,
+        height: this.containerHeight,
+        autostart: false
+      });
+    }
+
     if (spd !== undefined) this.siriWave.setSpeed(spd);
-    if (amp !== undefined) this.siriWave.setAmplitude(amp); // console.log({spd, amp});
+    if (amp !== undefined) this.siriWave.setAmplitude(amp / 255 * this.containerHeight);
+    return {
+      width: this.containerWidth,
+      height: this.containerHeight
+    };
   }
 
   async render(time, delta) {
@@ -604,7 +625,7 @@ module.exports = SiriCurveMixin;
 
 /***/ }),
 
-/***/ 571:
+/***/ 570:
 /***/ (function(module) {
 
 !function (t, i) {
@@ -6534,7 +6555,7 @@ module.exports = webpackEmptyContext;
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = __webpack_require__(570);
+/******/ 	var __webpack_exports__ = __webpack_require__(569);
 /******/ 	__webpack_exports__ = __webpack_exports__["default"];
 /******/ 	
 /******/ 	return __webpack_exports__;

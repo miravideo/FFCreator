@@ -14,14 +14,38 @@ class AudioChartMixin extends Mixin {
     await super.init(conf);
     let { width=128, height=128 } = conf;
     this.resize(width, height);
+    this.containerWidth = width;
+    this.containerHeight = height;
+    this.initConf(conf);
     return { width: this.width, height: this.height, duration: this.MAX_TIME };
   }
 
+  initConf(conf) {
+    this.conf.r = conf.r || Math.floor(Math.min(this.containerWidth, this.containerHeight) / 4);
+    this.conf.color = conf.color || "#FFFFFF";
+    this.conf.barWidth = conf.barWidth || 2;
+    this.conf.barHeight = conf.barHeight || 150;
+    this.conf.barSpacing = conf.barSpacing || 2;
+    this.conf.baseColor =  conf.baseColor || "#FFFFFF";
+    this.conf.baseWidth = conf.baseWidth || 2;
+    this.conf.minBarHeight = conf.minBarHeight || 1;
+    this.conf.step = conf.step || 1;
+    this.conf.shadowColor = conf.shadowColor || '#00f';
+    this.conf.shadowBlur = conf.shadowBlur || 0;
+    this.conf.circleAngle = conf.circleAngle || 90;
+  }
+
   async update(conf) {
+    if (conf.width) this.containerWidth = conf.width;
+    if (conf.height) this.containerHeight = conf.height;
+    if ((conf.width && conf.width !== this.width) || (conf.height && conf.height !== this.height)) {
+      this.resize(conf.width || this.containerWidth, conf.height || this.containerHeight);
+    }
+    Object.assign(this.conf, conf);
     const { fft, gain } = conf;
     this.fft = fft;
     this.gain = gain;
-    // console.log({spd, amp});
+    return {width: this.containerWidth, height: this.containerHeight}
   }
 
   drawMove(delta) {
@@ -30,23 +54,28 @@ class AudioChartMixin extends Mixin {
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const { barHeight=canvas.height/2, width=canvas.width, color="#FFFFFF", shadowHeight=50, shadowColor, minHeight=1, step=1 } = this.conf;
-    let { barWidth=5, barSpacing=2 } = this.conf;
+    const {color, minBarHeight, step, barWidth, barSpacing} = this.conf;
+    const width = this.containerWidth;
+    const barHeight = this.containerHeight * 0.8;
     const barSize = barWidth + barSpacing;
-    this.gains.push(this.gain)
+
+    if (delta) {
+      this.gains.push(this.gain);
+    }
     let x = width - barSize;
+    ctx.shadowColor = this.conf.shadowColor;
+    ctx.shadowBlur = this.conf.shadowBlur;
     for (let i = this.gains.length; i > 0; i--) {
       if (x < 0) {
         break
       }
       if (i % step === 0 || i === this.gains.length) {
         x -= barSize;
-        const val = clamp(this.gains[i] / 100 * barHeight, minHeight, canvas.height/2);
+        const val = clamp(this.gains[i] / 100 * barHeight, minBarHeight, barHeight);
         ctx.fillStyle = color;
-        ctx.fillRect(x, canvas.height/2, barWidth, -val);
+        ctx.fillRect(x, canvas.height, barWidth, -val);
       }
     }
-
   }
 
   drawSpectrum() {
@@ -54,94 +83,70 @@ class AudioChartMixin extends Mixin {
     const canvas = this.canvas;
     const bars = this.fft.length;
     const ctx = canvas.getContext('2d');
-    const { barHeight=canvas.height/2, width=canvas.width, color="#FFFFFF", shadowHeight=50, shadowColor, minHeight=1 } = this.conf;
-    let { barWidth=2, barSpacing=-1 } = this.conf;
+    const {color, minBarHeight, step, barWidth, barSpacing} = this.conf;
+    const width = this.containerWidth;
+    const barHeight = this.containerHeight * 0.8;
+    const barSize = barWidth + barSpacing;
 
     // Reset canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    if (barWidth < 0 && barSpacing < 0) {
-      barSpacing = width / bars / 2;
-      barWidth = barSpacing;
-    } else if (barSpacing >= 0 && barWidth < 0) {
-      barWidth = (width - bars * barSpacing) / bars;
-      if (barWidth <= 0) barWidth = 1;
-    } else if (barWidth > 0 && barSpacing < 0) {
-      barSpacing = (width - bars * barWidth) / bars;
-      if (barSpacing <= 0) barSpacing = 1;
-    }
-
-    // Calculate bars to display
-    const barSize = barWidth + barSpacing;
-    const fullWidth = barSize * bars;
-
-    // Stepping
-    const step = fullWidth > width ? fullWidth / width : 1;
-
-    // Canvas setup
-    // setColor(context, color, 0, 0, 0, height);
 
     // Draw bars
-    for (let i = 0, x = 0, last = null; i < bars && x < fullWidth; i += step, x += barSize) {
-      const index = ~~i;
-
-      if (index !== last) {
-        const val = clamp(this.fft[index] * 10 * barHeight, minHeight, canvas.height/2);
-        last = index;
+    for (let i = 0, x = 0, last = null; i < bars && x < width; i += step, x += barSize) {
+        const val = clamp(this.fft[i] * barHeight, minBarHeight, barHeight);
         ctx.fillStyle = color;
-        ctx.fillRect(x, canvas.height/2, barWidth, -val);
-      }
-    }
-
-    // Draw shadow bars
-    if (shadowHeight > 0) {
-
-      for (let i = 0, x = 0, last = null; i < bars && x < fullWidth; i += step, x += barSize) {
-        const index = ~~i;
-
-        if (index !== last) {
-          const val = this.fft[index] * shadowHeight;
-          last = index;
-
-          ctx.fillStyle = 'rgb(0, 0, 0, 0.3)';
-          ctx.fillRect(x, canvas.height/2, barWidth, val);
-        }
-      }
+        ctx.fillRect(x, canvas.height, barWidth, -val);
     }
   }
 
   drawCircleBar() {
     if (!this.fft) return
-    const dx = (value) => {
-      return Math.sin((i) / 180 * Math.PI) * (value)
+    const dx = (angle, value) => {
+      return Math.sin((angle) / 180 * Math.PI) * (value)
     }
-    const dy = (value) => {
-      return Math.cos((i) / 180 * Math.PI) * (value)
+    const dy = (angle, value) => {
+      return Math.cos((angle) / 180 * Math.PI) * (value)
     }
 
     const canvas = this.canvas;
+    const r = (this.containerWidth > this.containerHeight) ? this.containerHeight / 4 : this.containerWidth / 4;
+    const barHeight = r * 0.8;
     const ctx = canvas.getContext('2d');
-    let {r=150, color="#FFFFFF", barWidth=2, barHeight=150, baseColor="#FFFFFF", baseWidth=2} = this.conf;
+    const {color, minBarHeight, barWidth, barSpacing, circleAngle, step} = this.conf;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.strokeStyle=color;
-    for (var i = 0; i < 180; i++) {
-      var index=i*(this.fft.length/180)>>0;
-      var value = (this.fft[index]) * 10 * barHeight + r;
+    ctx.strokeStyle = color;
+    let index = 0;
+    for (let angle = 0; angle <= circleAngle; angle+= barSpacing) {
+      // 柱的高度
+      const h = clamp((this.fft[index] || 0) * barHeight, minBarHeight, barHeight);
+      const value = h + r;
       ctx.beginPath();
-      ctx.lineWidth = barWidth;
-      ctx.moveTo(canvas.width/2 - dx(r), canvas.height/2 - dy(r));
-      ctx.lineTo(canvas.width/2 - dx(value), (canvas.height/2- dy(value)));
+      ctx.lineWidth = this.barWidth;
+      ctx.moveTo(canvas.width/2 - dx(angle, r), canvas.height/2 - dy(angle,r));
+      ctx.lineTo(canvas.width/2 - dx(angle,value), (canvas.height/2- dy(angle,value)));
       ctx.stroke();
       ctx.beginPath();
-      ctx.lineWidth = barWidth;
-      ctx.moveTo(canvas.width/2 + dx(r), canvas.height/2 - dy(r));
-      ctx.lineTo(canvas.width/2 + dx(value), (canvas.height/2 - dy(value)));
+      ctx.lineWidth = this.barWidth;
+      ctx.moveTo(canvas.width/2 + dx(angle,r), canvas.height/2 - dy(angle,r));
+      ctx.lineTo(canvas.width/2 + dx(angle,value), (canvas.height/2 - dy(angle,value)));
       ctx.stroke();
+
+      if (circleAngle === 90) {
+        ctx.beginPath();
+        ctx.lineWidth = this.barWidth;
+        ctx.moveTo(canvas.width/2 + dx(angle, r), canvas.height/2 + dy(angle, r));
+        ctx.lineTo(canvas.width/2 + dx(angle, value), (canvas.height/2 + dy(angle, value)));
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.lineWidth = this.barWidth;
+        ctx.moveTo(canvas.width/2 - dx(angle, r), canvas.height/2 + dy(angle, r));
+        ctx.lineTo(canvas.width/2 - dx(angle, value), (canvas.height/2 + dy(angle, value)));
+        ctx.stroke();
+      }
+      index += step;
     }
-    ctx.beginPath();
-    ctx.strokeStyle=baseColor;
-    ctx.lineWidth = baseWidth;
-    ctx.arc(canvas.width/2, canvas.height/2, 150, 0, 2 * Math.PI, false);
+    ctx.lineWidth = barWidth;
     ctx.stroke();
   }
 

@@ -15,14 +15,28 @@ class SiriCurveMixin extends Mixin {
       height: this.height,
       autostart: false,
     });
+    this.containerWidth = width;
+    this.containerHeight = height;
     return { width: this.width, height: this.height, duration: this.MAX_TIME };
   }
 
   async update(conf) {
-    const { spd, amp } = conf;
+    const { spd, amp, style } = conf;
+    if (conf.width) this.containerWidth = conf.width;
+    if (conf.height) this.containerHeight = conf.height;
+    if ((conf.width && conf.width !== this.width) || (conf.height && conf.height !== this.height)) {
+      this.resize(conf.width || this.containerWidth, conf.height || this.containerHeight);
+      this.siriWave = new SiriWave({
+        style: style === 'ios' ? 'ios' : 'ios9',
+        canvas: this.canvas,
+        width: this.containerWidth,
+        height: this.containerHeight,
+        autostart: false,
+      });
+    }
     if (spd !== undefined) this.siriWave.setSpeed(spd);
-    if (amp !== undefined) this.siriWave.setAmplitude(amp);
-    // console.log({spd, amp});
+    if (amp !== undefined) this.siriWave.setAmplitude(amp / 255 * this.containerHeight);
+    return {width: this.containerWidth, height: this.containerHeight}
   }
 
   async render(time, delta) {

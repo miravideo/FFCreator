@@ -6,9 +6,14 @@ const jsmediatags = require("jsmediatags");
 class DiskCoverMixin extends Mixin {
   async init(conf) {
     await super.init(conf);
-    this.meta = await this.readMeta(conf.src);
+    try {
+      this.meta = await this.readMeta(conf.src);
+    } catch (e) {
+      console.log('e', e)
+    }
+
     this.speed = this.conf.speed || 1.0;
-    if (this.meta.image?.width && this.meta.image?.height) {
+    if (this.meta?.image?.width && this.meta?.image?.height) {
       const {width, height} = this.meta.image;
       const min = Math.min(width, height);
       this.resize(min, min);
@@ -35,6 +40,12 @@ class DiskCoverMixin extends Mixin {
     return { width: this.width, height: this.height, duration: this.MAX_TIME };
   }
 
+  async update(conf) {
+    if (conf?.speed !== undefined) {
+      this.speed = conf.speed;
+    }
+  }
+
   async readMeta(src) {
     return new Promise((resolve, reject) => {
       jsmediatags.read(src, {
@@ -49,11 +60,11 @@ class DiskCoverMixin extends Mixin {
             }
             const src = "data:" + image.format + ";base64," + btoa(base64String);
             meta.image = await this.getImageData(src);
-            resolve(meta);
           }
+          resolve(meta);
         },
         onError: function(error) {
-          // console.log(':(', error.type, error.info);
+          console.log(':(', error.type, error.info);
           reject(error);
         }
       });
