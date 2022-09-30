@@ -7,7 +7,7 @@
 		exports["mixin"] = factory();
 	else
 		root["mixin"] = factory();
-})(this, () => {
+})(this, function() {
 return /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
@@ -549,7 +549,7 @@ module.exports = Mixin;
 
 /***/ }),
 
-/***/ 571:
+/***/ 572:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 const Mixin = __webpack_require__(5);
@@ -562,7 +562,7 @@ const {
   isWebWorker
 } = __webpack_require__(6);
 
-const jsmediatags = __webpack_require__(572);
+const jsmediatags = __webpack_require__(573);
 
 class DiskCoverMixin extends Mixin {
   async init(conf) {
@@ -839,7 +839,7 @@ exports.isJsDom = isJsDom;
 
 /***/ }),
 
-/***/ 588:
+/***/ 589:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -5906,6 +5906,201 @@ function isSlowBuffer(obj) {
 
 /***/ }),
 
+/***/ 580:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+function _typeof(obj) {
+  "@babel/helpers - typeof";
+
+  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+    _typeof = function _typeof(obj) {
+      return typeof obj;
+    };
+  } else {
+    _typeof = function _typeof(obj) {
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+    };
+  }
+
+  return _typeof(obj);
+}
+
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, descriptor.key, descriptor);
+  }
+}
+
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
+  return Constructor;
+}
+
+function _inherits(subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function");
+  }
+
+  subClass.prototype = Object.create(superClass && superClass.prototype, {
+    constructor: {
+      value: subClass,
+      writable: true,
+      configurable: true
+    }
+  });
+  if (superClass) _setPrototypeOf(subClass, superClass);
+}
+
+function _setPrototypeOf(o, p) {
+  _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+    o.__proto__ = p;
+    return o;
+  };
+
+  return _setPrototypeOf(o, p);
+}
+
+function _createSuper(Derived) {
+  var hasNativeReflectConstruct = _isNativeReflectConstruct();
+
+  return function _createSuperInternal() {
+    var Super = _getPrototypeOf(Derived),
+        result;
+
+    if (hasNativeReflectConstruct) {
+      var NewTarget = _getPrototypeOf(this).constructor;
+
+      result = Reflect.construct(Super, arguments, NewTarget);
+    } else {
+      result = Super.apply(this, arguments);
+    }
+
+    return _possibleConstructorReturn(this, result);
+  };
+}
+
+function _possibleConstructorReturn(self, call) {
+  if (call && (_typeof(call) === "object" || typeof call === "function")) {
+    return call;
+  }
+
+  return _assertThisInitialized(self);
+}
+
+function _assertThisInitialized(self) {
+  if (self === void 0) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+
+  return self;
+}
+
+function _isNativeReflectConstruct() {
+  if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+  if (Reflect.construct.sham) return false;
+  if (typeof Proxy === "function") return true;
+
+  try {
+    Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+function _getPrototypeOf(o) {
+  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+    return o.__proto__ || Object.getPrototypeOf(o);
+  };
+  return _getPrototypeOf(o);
+}
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+var MediaFileReader = __webpack_require__(574);
+
+var ArrayFileReader = /*#__PURE__*/function (_MediaFileReader) {
+  _inherits(ArrayFileReader, _MediaFileReader);
+
+  var _super = _createSuper(ArrayFileReader);
+
+  function ArrayFileReader(array) {
+    var _this;
+
+    _classCallCheck(this, ArrayFileReader);
+
+    _this = _super.call(this);
+
+    _defineProperty(_assertThisInitialized(_this), "_array", void 0);
+
+    _defineProperty(_assertThisInitialized(_this), "_size", void 0);
+
+    _this._array = array;
+    _this._size = array.length;
+    _this._isInitialized = true;
+    return _this;
+  }
+
+  _createClass(ArrayFileReader, [{
+    key: "init",
+    value: function init(callbacks) {
+      setTimeout(callbacks.onSuccess, 0);
+    }
+  }, {
+    key: "loadRange",
+    value: function loadRange(range, callbacks) {
+      setTimeout(callbacks.onSuccess, 0);
+    }
+  }, {
+    key: "getByteAt",
+    value: function getByteAt(offset) {
+      if (offset >= this._array.length) {
+        throw new Error("Offset " + offset + " hasn't been loaded yet.");
+      }
+
+      return this._array[offset];
+    }
+  }], [{
+    key: "canReadFile",
+    value: function canReadFile(file) {
+      return Array.isArray(file) || typeof Buffer === 'function' && Buffer.isBuffer(file);
+    }
+  }]);
+
+  return ArrayFileReader;
+}(MediaFileReader);
+
+module.exports = ArrayFileReader;
+
+/***/ }),
+
 /***/ 579:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
@@ -6044,204 +6239,9 @@ function _defineProperty(obj, key, value) {
   return obj;
 }
 
-var MediaFileReader = __webpack_require__(573);
+var ChunkedFileData = __webpack_require__(577);
 
-var ArrayFileReader = /*#__PURE__*/function (_MediaFileReader) {
-  _inherits(ArrayFileReader, _MediaFileReader);
-
-  var _super = _createSuper(ArrayFileReader);
-
-  function ArrayFileReader(array) {
-    var _this;
-
-    _classCallCheck(this, ArrayFileReader);
-
-    _this = _super.call(this);
-
-    _defineProperty(_assertThisInitialized(_this), "_array", void 0);
-
-    _defineProperty(_assertThisInitialized(_this), "_size", void 0);
-
-    _this._array = array;
-    _this._size = array.length;
-    _this._isInitialized = true;
-    return _this;
-  }
-
-  _createClass(ArrayFileReader, [{
-    key: "init",
-    value: function init(callbacks) {
-      setTimeout(callbacks.onSuccess, 0);
-    }
-  }, {
-    key: "loadRange",
-    value: function loadRange(range, callbacks) {
-      setTimeout(callbacks.onSuccess, 0);
-    }
-  }, {
-    key: "getByteAt",
-    value: function getByteAt(offset) {
-      if (offset >= this._array.length) {
-        throw new Error("Offset " + offset + " hasn't been loaded yet.");
-      }
-
-      return this._array[offset];
-    }
-  }], [{
-    key: "canReadFile",
-    value: function canReadFile(file) {
-      return Array.isArray(file) || typeof Buffer === 'function' && Buffer.isBuffer(file);
-    }
-  }]);
-
-  return ArrayFileReader;
-}(MediaFileReader);
-
-module.exports = ArrayFileReader;
-
-/***/ }),
-
-/***/ 578:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-
-
-function _typeof(obj) {
-  "@babel/helpers - typeof";
-
-  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-    _typeof = function _typeof(obj) {
-      return typeof obj;
-    };
-  } else {
-    _typeof = function _typeof(obj) {
-      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-    };
-  }
-
-  return _typeof(obj);
-}
-
-function _classCallCheck(instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
-  }
-}
-
-function _defineProperties(target, props) {
-  for (var i = 0; i < props.length; i++) {
-    var descriptor = props[i];
-    descriptor.enumerable = descriptor.enumerable || false;
-    descriptor.configurable = true;
-    if ("value" in descriptor) descriptor.writable = true;
-    Object.defineProperty(target, descriptor.key, descriptor);
-  }
-}
-
-function _createClass(Constructor, protoProps, staticProps) {
-  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-  if (staticProps) _defineProperties(Constructor, staticProps);
-  return Constructor;
-}
-
-function _inherits(subClass, superClass) {
-  if (typeof superClass !== "function" && superClass !== null) {
-    throw new TypeError("Super expression must either be null or a function");
-  }
-
-  subClass.prototype = Object.create(superClass && superClass.prototype, {
-    constructor: {
-      value: subClass,
-      writable: true,
-      configurable: true
-    }
-  });
-  if (superClass) _setPrototypeOf(subClass, superClass);
-}
-
-function _setPrototypeOf(o, p) {
-  _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
-    o.__proto__ = p;
-    return o;
-  };
-
-  return _setPrototypeOf(o, p);
-}
-
-function _createSuper(Derived) {
-  var hasNativeReflectConstruct = _isNativeReflectConstruct();
-
-  return function _createSuperInternal() {
-    var Super = _getPrototypeOf(Derived),
-        result;
-
-    if (hasNativeReflectConstruct) {
-      var NewTarget = _getPrototypeOf(this).constructor;
-
-      result = Reflect.construct(Super, arguments, NewTarget);
-    } else {
-      result = Super.apply(this, arguments);
-    }
-
-    return _possibleConstructorReturn(this, result);
-  };
-}
-
-function _possibleConstructorReturn(self, call) {
-  if (call && (_typeof(call) === "object" || typeof call === "function")) {
-    return call;
-  }
-
-  return _assertThisInitialized(self);
-}
-
-function _assertThisInitialized(self) {
-  if (self === void 0) {
-    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-  }
-
-  return self;
-}
-
-function _isNativeReflectConstruct() {
-  if (typeof Reflect === "undefined" || !Reflect.construct) return false;
-  if (Reflect.construct.sham) return false;
-  if (typeof Proxy === "function") return true;
-
-  try {
-    Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
-    return true;
-  } catch (e) {
-    return false;
-  }
-}
-
-function _getPrototypeOf(o) {
-  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
-    return o.__proto__ || Object.getPrototypeOf(o);
-  };
-  return _getPrototypeOf(o);
-}
-
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-}
-
-var ChunkedFileData = __webpack_require__(576);
-
-var MediaFileReader = __webpack_require__(573);
+var MediaFileReader = __webpack_require__(574);
 
 var BlobFileReader = /*#__PURE__*/function (_MediaFileReader) {
   _inherits(BlobFileReader, _MediaFileReader);
@@ -6319,7 +6319,7 @@ module.exports = BlobFileReader;
 
 /***/ }),
 
-/***/ 576:
+/***/ 577:
 /***/ ((module) => {
 
 "use strict";
@@ -6577,7 +6577,7 @@ module.exports = ChunkedFileData;
 
 /***/ }),
 
-/***/ 585:
+/***/ 586:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -6715,7 +6715,7 @@ function _defineProperty(obj, key, value) {
   return obj;
 }
 
-var MediaTagReader = __webpack_require__(580);
+var MediaTagReader = __webpack_require__(581);
 /* The first 4 bytes of a FLAC file describes the header for the file. If these
  * bytes respectively read "fLaC", we can determine it is a FLAC file.
  */
@@ -7074,7 +7074,7 @@ module.exports = FLACTagReader;
 
 /***/ }),
 
-/***/ 581:
+/***/ 582:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -7197,9 +7197,9 @@ function _getPrototypeOf(o) {
   return _getPrototypeOf(o);
 }
 
-var MediaTagReader = __webpack_require__(580);
+var MediaTagReader = __webpack_require__(581);
 
-var MediaFileReader = __webpack_require__(573);
+var MediaFileReader = __webpack_require__(574);
 
 var ID3v1TagReader = /*#__PURE__*/function (_MediaTagReader) {
   _inherits(ID3v1TagReader, _MediaTagReader);
@@ -7293,7 +7293,7 @@ module.exports = ID3v1TagReader;
 
 /***/ }),
 
-/***/ 583:
+/***/ 584:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -7321,11 +7321,11 @@ function _createClass(Constructor, protoProps, staticProps) {
   return Constructor;
 }
 
-var MediaFileReader = __webpack_require__(573);
+var MediaFileReader = __webpack_require__(574);
 
-var StringUtils = __webpack_require__(574);
+var StringUtils = __webpack_require__(575);
 
-var ArrayFileReader = __webpack_require__(579);
+var ArrayFileReader = __webpack_require__(580);
 
 var FRAME_DESCRIPTIONS = {
   // v2.2
@@ -7917,7 +7917,7 @@ module.exports = ID3v2FrameReader;
 
 /***/ }),
 
-/***/ 582:
+/***/ 583:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -8040,11 +8040,11 @@ function _getPrototypeOf(o) {
   return _getPrototypeOf(o);
 }
 
-var MediaTagReader = __webpack_require__(580);
+var MediaTagReader = __webpack_require__(581);
 
-var MediaFileReader = __webpack_require__(573);
+var MediaFileReader = __webpack_require__(574);
 
-var ID3v2FrameReader = __webpack_require__(583);
+var ID3v2FrameReader = __webpack_require__(584);
 
 var ID3_HEADER_SIZE = 10;
 
@@ -8213,7 +8213,7 @@ module.exports = ID3v2TagReader;
 
 /***/ }),
 
-/***/ 584:
+/***/ 585:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -8344,9 +8344,9 @@ function _getPrototypeOf(o) {
   return _getPrototypeOf(o);
 }
 
-var MediaTagReader = __webpack_require__(580);
+var MediaTagReader = __webpack_require__(581);
 
-var MediaFileReader = __webpack_require__(573);
+var MediaFileReader = __webpack_require__(574);
 
 var MP4TagReader = /*#__PURE__*/function (_MediaTagReader) {
   _inherits(MP4TagReader, _MediaTagReader);
@@ -8689,7 +8689,7 @@ module.exports = MP4TagReader;
 
 /***/ }),
 
-/***/ 573:
+/***/ 574:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -8732,7 +8732,7 @@ function _defineProperty(obj, key, value) {
   return obj;
 }
 
-var StringUtils = __webpack_require__(574);
+var StringUtils = __webpack_require__(575);
 
 var MediaFileReader = /*#__PURE__*/function () {
   function MediaFileReader(path) {
@@ -8967,7 +8967,7 @@ module.exports = MediaFileReader;
 
 /***/ }),
 
-/***/ 580:
+/***/ 581:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -9010,7 +9010,7 @@ function _defineProperty(obj, key, value) {
   return obj;
 }
 
-var MediaFileReader = __webpack_require__(573);
+var MediaFileReader = __webpack_require__(574);
 
 var MediaTagReader = /*#__PURE__*/function () {
   function MediaTagReader(mediaFileReader) {
@@ -9130,7 +9130,7 @@ module.exports = MediaTagReader;
 
 /***/ }),
 
-/***/ 589:
+/***/ 590:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -9268,11 +9268,11 @@ function _defineProperty(obj, key, value) {
   return obj;
 }
 
-var fs = __webpack_require__(590);
+var fs = __webpack_require__(591);
 
-var ChunkedFileData = __webpack_require__(576);
+var ChunkedFileData = __webpack_require__(577);
 
-var MediaFileReader = __webpack_require__(573);
+var MediaFileReader = __webpack_require__(574);
 
 var NodeFileReader = /*#__PURE__*/function (_MediaFileReader) {
   _inherits(NodeFileReader, _MediaFileReader);
@@ -9390,7 +9390,7 @@ module.exports = NodeFileReader;
 
 /***/ }),
 
-/***/ 586:
+/***/ 587:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -9528,14 +9528,14 @@ function _defineProperty(obj, key, value) {
   return obj;
 }
 
-var RNFS = __webpack_require__(587);
+var RNFS = __webpack_require__(588);
 
-var _require = __webpack_require__(588),
+var _require = __webpack_require__(589),
     Buffer = _require.Buffer;
 
-var ChunkedFileData = __webpack_require__(576);
+var ChunkedFileData = __webpack_require__(577);
 
-var MediaFileReader = __webpack_require__(573);
+var MediaFileReader = __webpack_require__(574);
 
 var ReactNativeFileReader = /*#__PURE__*/function (_MediaFileReader) {
   _inherits(ReactNativeFileReader, _MediaFileReader);
@@ -9616,7 +9616,7 @@ module.exports = ReactNativeFileReader;
 
 /***/ }),
 
-/***/ 574:
+/***/ 575:
 /***/ ((module) => {
 
 "use strict";
@@ -9783,7 +9783,7 @@ module.exports = StringUtils;
 
 /***/ }),
 
-/***/ 575:
+/***/ 576:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -9921,9 +9921,9 @@ function _defineProperty(obj, key, value) {
   return obj;
 }
 
-var ChunkedFileData = __webpack_require__(576);
+var ChunkedFileData = __webpack_require__(577);
 
-var MediaFileReader = __webpack_require__(573);
+var MediaFileReader = __webpack_require__(574);
 
 var CHUNK_SIZE = 1024;
 
@@ -10225,7 +10225,7 @@ var XhrFileReader = /*#__PURE__*/function (_MediaFileReader) {
     value: function _createXHRObject() {
       if (typeof window === "undefined" && !this._isWebWorker()) {
         // $FlowIssue - flow is not able to recognize this module.
-        return new ((__webpack_require__(577).XMLHttpRequest))();
+        return new ((__webpack_require__(578).XMLHttpRequest))();
       }
 
       if (typeof XMLHttpRequest !== "undefined") {
@@ -10270,7 +10270,7 @@ module.exports = XhrFileReader;
 
 /***/ }),
 
-/***/ 572:
+/***/ 573:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -10313,23 +10313,23 @@ function _defineProperty(obj, key, value) {
   return obj;
 }
 
-var MediaFileReader = __webpack_require__(573);
+var MediaFileReader = __webpack_require__(574);
 
-var XhrFileReader = __webpack_require__(575);
+var XhrFileReader = __webpack_require__(576);
 
-var BlobFileReader = __webpack_require__(578);
+var BlobFileReader = __webpack_require__(579);
 
-var ArrayFileReader = __webpack_require__(579);
+var ArrayFileReader = __webpack_require__(580);
 
-var MediaTagReader = __webpack_require__(580);
+var MediaTagReader = __webpack_require__(581);
 
-var ID3v1TagReader = __webpack_require__(581);
+var ID3v1TagReader = __webpack_require__(582);
 
-var ID3v2TagReader = __webpack_require__(582);
+var ID3v2TagReader = __webpack_require__(583);
 
-var MP4TagReader = __webpack_require__(584);
+var MP4TagReader = __webpack_require__(585);
 
-var FLACTagReader = __webpack_require__(585);
+var FLACTagReader = __webpack_require__(586);
 
 var mediaFileReaders = [];
 var mediaTagReaders = [];
@@ -10596,11 +10596,11 @@ Config.addFileReader(XhrFileReader).addFileReader(BlobFileReader).addFileReader(
 
 if (typeof process !== "undefined" && !process.browser) {
   if (typeof navigator !== "undefined" && navigator.product === "ReactNative") {
-    var ReactNativeFileReader = __webpack_require__(586);
+    var ReactNativeFileReader = __webpack_require__(587);
 
     Config.addFileReader(ReactNativeFileReader);
   } else {
-    var NodeFileReader = __webpack_require__(589);
+    var NodeFileReader = __webpack_require__(590);
 
     Config.addFileReader(NodeFileReader);
   }
@@ -12831,7 +12831,7 @@ module.exports = unique;
 
 /***/ }),
 
-/***/ 577:
+/***/ 578:
 /***/ ((module) => {
 
 module.exports = XMLHttpRequest;
@@ -12853,14 +12853,14 @@ module.exports = webpackEmptyContext;
 
 /***/ }),
 
-/***/ 590:
+/***/ 591:
 /***/ (() => {
 
 /* (ignored) */
 
 /***/ }),
 
-/***/ 587:
+/***/ 588:
 /***/ (() => {
 
 /* (ignored) */
@@ -12923,7 +12923,7 @@ module.exports = webpackEmptyContext;
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = __webpack_require__(571);
+/******/ 	var __webpack_exports__ = __webpack_require__(572);
 /******/ 	__webpack_exports__ = __webpack_exports__["default"];
 /******/ 	
 /******/ 	return __webpack_exports__;

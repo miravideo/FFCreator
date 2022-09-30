@@ -7,7 +7,7 @@
 		exports["mixin"] = factory();
 	else
 		root["mixin"] = factory();
-})(this, () => {
+})(this, function() {
 return /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
@@ -361,7 +361,7 @@ module.exports = XhrUtil;
 
 /***/ }),
 
-/***/ 592:
+/***/ 593:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 const Mixin = __webpack_require__(5);
@@ -6473,7 +6473,7 @@ module.exports = webpackEmptyContext;
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = __webpack_require__(592);
+/******/ 	var __webpack_exports__ = __webpack_require__(593);
 /******/ 	__webpack_exports__ = __webpack_exports__["default"];
 /******/ 	
 /******/ 	return __webpack_exports__;

@@ -7,7 +7,7 @@
 		exports["mixin"] = factory();
 	else
 		root["mixin"] = factory();
-})(this, () => {
+})(this, function() {
 return /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
@@ -549,7 +549,7 @@ module.exports = Mixin;
 
 /***/ }),
 
-/***/ 591:
+/***/ 592:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 const Mixin = __webpack_require__(5);
@@ -562,6 +562,7 @@ class Timeline extends Mixin {
   async init(conf) {
     await super.init(conf);
     this.resize(conf.width || 700, 10);
+    this.initConf(conf);
     return {
       width: this.width,
       height: this.height,
@@ -6314,7 +6315,7 @@ module.exports = webpackEmptyContext;
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = __webpack_require__(591);
+/******/ 	var __webpack_exports__ = __webpack_require__(592);
 /******/ 	__webpack_exports__ = __webpack_exports__["default"];
 /******/ 	
 /******/ 	return __webpack_exports__;

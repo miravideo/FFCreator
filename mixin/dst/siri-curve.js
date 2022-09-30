@@ -7,7 +7,7 @@
 		exports["mixin"] = factory();
 	else
 		root["mixin"] = factory();
-})(this, () => {
+})(this, function() {
 return /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
@@ -549,10 +549,10 @@ module.exports = Mixin;
 
 /***/ }),
 
-/***/ 569:
+/***/ 570:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const SiriWave = __webpack_require__(570); // import SiriWave from "./siri-curve/siriwave.umd.min.js";
+const SiriWave = __webpack_require__(571); // import SiriWave from "./siri-curve/siriwave.umd.min.js";
 
 
 const Mixin = __webpack_require__(5);
@@ -625,7 +625,7 @@ module.exports = SiriCurveMixin;
 
 /***/ }),
 
-/***/ 570:
+/***/ 571:
 /***/ (function(module) {
 
 !function (t, i) {
@@ -6555,7 +6555,7 @@ module.exports = webpackEmptyContext;
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = __webpack_require__(569);
+/******/ 	var __webpack_exports__ = __webpack_require__(570);
 /******/ 	__webpack_exports__ = __webpack_exports__["default"];
 /******/ 	
 /******/ 	return __webpack_exports__;
