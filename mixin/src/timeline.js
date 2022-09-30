@@ -5,6 +5,7 @@ class Timeline extends Mixin {
   async init(conf) {
     await super.init(conf);
     this.resize(conf.width || 700, 10);
+    this.initConf(conf);
     return { width: this.width, height: this.height, duration: this.MAX_TIME };
   }
 
