@@ -81,7 +81,7 @@ const Utils = {
 
     for (const [key, value] of arr) {
       const _keys = [...keys, key];
-      if (typeof value === 'object') dst[key] = DataUtil.dmap(value, func, _keys);else dst[key] = func(value, key, _keys);
+      if (typeof value === 'object') dst[key] = this.dmap(value, func, _keys);else dst[key] = func(value, key, _keys);
     }
 
     return dst;
