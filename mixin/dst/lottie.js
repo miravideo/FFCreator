@@ -16089,6 +16089,7 @@ const {
 class Mixin {
   constructor() {
     this.MAX_TIME = 99999;
+    this.msgs = {};
     if (isWebWorker) this.initWebWorker();else this.initNode();
   }
 
@@ -16122,6 +16123,8 @@ class Mixin {
     };
     this.createCanvas = createCanvas;
   }
+
+  async update(conf) {}
 
   async getRemoteData(url, parseJson = true) {
     try {
@@ -16172,18 +16175,29 @@ class Mixin {
 
   start() {
     addEventListener('message', async e => {
-      if (typeof e.data !== 'object' || !e.data.method) {
+      if (typeof e.data !== 'object') return postMessage({
+        err: `invalid request!`
+      });
+      const msgid = e.data.msgid;
+
+      if (this.msgs[msgid]) {
+        const callback = this.msgs[msgid];
+        callback(e.data.resp);
+        delete this.msgs[msgid];
+        return;
+      } else if (!e.data.method) {
         return postMessage({
-          err: `invalid request!`
+          err: `invalid request!`,
+          msgid
         });
       }
 
-      const msgid = e.data.msgid;
       const func = this[e.data.method];
 
       if (!func || typeof func !== 'function') {
         return postMessage({
-          err: `method not found: ${e.data.method}`
+          err: `method not found: ${e.data.method}`,
+          msgid
         });
       }
 
@@ -16193,6 +16207,44 @@ class Mixin {
         msgid
       });
     });
+  }
+
+  async getImageData(src) {
+    return await this.exec('getImageData', {
+      src
+    });
+  }
+
+  exec(method, args, timeout = 10000) {
+    return new Promise(async (resolve, reject) => {
+      // set callback
+      if (isWebWorker) {
+        const msgid = this.genUuid();
+
+        this.msgs[msgid] = data => {
+          // console.log('on resp!!', {req: args, resp: data});
+          if (typeof data === 'object' && data.err) return reject(data);
+          resolve(data);
+        }; // call
+
+
+        postMessage({ ...args,
+          method,
+          msgid
+        }); // timeout
+
+        setTimeout(() => {
+          delete this.msgs[msgid];
+          reject();
+        }, timeout);
+      } else if (this.execCallback) {
+        resolve(await this.execCallback(method, args));
+      }
+    });
+  }
+
+  genUuid() {
+    return Math.random().toString(36).substr(-8) + Math.random().toString(36).substr(-8);
   }
 
   destroy() {
@@ -16415,7 +16467,7 @@ const Utils = {
 
     for (const [key, value] of arr) {
       const _keys = [...keys, key];
-      if (typeof value === 'object') dst[key] = DataUtil.dmap(value, func, _keys);else dst[key] = func(value, key, _keys);
+      if (typeof value === 'object') dst[key] = this.dmap(value, func, _keys);else dst[key] = func(value, key, _keys);
     }
 
     return dst;
