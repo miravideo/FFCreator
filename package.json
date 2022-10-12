@@ -40,7 +40,7 @@
     "fluent-ffmpeg": "^2.1.2",
     "fourier-transform": "^1.1.2",
     "fs-extra": "^9.0.1",
-    "get-pixels": "git+http://gitlab.mirav.cn/open/get-pixels.git",
+    "get-pixels": "git+https://github.com/miravideo/get-pixels",
     "gl-buffer": "^2.1.2",
     "gl-texture2d": "^2.1.0",
     "gl-transitions": "^1.43.0",
