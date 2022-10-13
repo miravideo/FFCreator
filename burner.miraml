@@ -1,4 +1,4 @@
-<miraml author="ZhaoJun" name="Composite" mns="https://cos.mirav.cn/player/">
+<miraml>
     <canvas width="1280" height="720">
       <spine>
         <!-- 第一幕，0~2秒 -->
@@ -25,11 +25,6 @@
         <!-- 第四幕，6~8秒 -->
         <video x="50vw" y="50vh" width="100vw" src="https://cos.mirav.cn/player/pic_oceans.mp4" duration="2" ss="20"></video>
       </spine>
-      <mixin-echart refId="chart-demo" x="50vw" y="50vh" width="1100" height="600" movieType="move"   
-        theme="dark" opacity="0.5" zIndex="9" speed="5" duration="15" version="1.0.1"
-        template="https://cos.mirav.cn/player/chart-template-01.tpl" 
-        data="https://cos.mirav.cn/player/chart-data-01.json">
-      </mixin-echart>
       <audio audio="true" src="https://cos.mirav.cn/player/oceans.mp3" duration="10" fadeOut="1"></audio>
     </canvas>
   </miraml>
